@@ -2,6 +2,8 @@ package Data::Microformat::hCard::base;
 
 use strict;
 
+our $VERSION = "0.01";
+
 use HTML::TreeBuilder;
 
 sub new
