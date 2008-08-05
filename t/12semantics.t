@@ -1,7 +1,7 @@
 #!perl -w
 
 use strict;
-use Data::Microformats::hCard;
+use Data::Microformat::hCard;
 
 use Test::More tests => 32;
 
@@ -25,7 +25,7 @@ my $simple = << 'EOF';
 </div>
 EOF
 
-ok(my $card = Data::Microformats::hCard->parse($simple));
+ok(my $card = Data::Microformat::hCard->parse($simple));
 is($card->nickname, "Foo");
 is($card->photo, "http://ussjoin.com");
 is($card->note, "Test");
@@ -43,7 +43,7 @@ $simple = << 'EOF';
 </span>
 EOF
 
-ok(my $org = Data::Microformats::hCard::organization->parse($simple));
+ok(my $org = Data::Microformat::hCard::organization->parse($simple));
 
 is($org->organization_name, "Zaphod for President");
 is($org->organization_unit, "Dirty Tricks");
@@ -59,7 +59,7 @@ $simple = << 'EOF';
 </span>
 EOF
 
-ok(my $name = Data::Microformats::hCard::name->parse($simple));
+ok(my $name = Data::Microformat::hCard::name->parse($simple));
 
 is($name->family_name, "Pag");
 is($name->given_name, "Zipo");
@@ -74,7 +74,7 @@ $simple = << 'EOF';
 </span>
 EOF
 
-ok(my $type = Data::Microformats::hCard::type->parse($simple));
+ok(my $type = Data::Microformat::hCard::type->parse($simple));
 
 is($type->type, "Home");
 is($type->value, "+1.415.555.1212");
@@ -86,7 +86,7 @@ $simple = << 'EOF';
 </div>
 EOF
 
-ok(my $geo = Data::Microformats::geo->parse($simple));
+ok(my $geo = Data::Microformat::geo->parse($simple));
 
 is($geo->latitude, "37.386013");
 is($geo->longitude, "-122.082932");
@@ -102,7 +102,7 @@ $simple = << 'EOF';
 </div>
 EOF
 
-ok(my $adr = Data::Microformats::adr->parse($simple));
+ok(my $adr = Data::Microformat::adr->parse($simple));
 
 is($adr->street_address, "665 3rd St.");
 is($adr->extended_address, "Suite 207");

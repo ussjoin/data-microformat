@@ -1,7 +1,7 @@
 #!perl -w
 
 use strict;
-use Data::Microformats::hCard;
+use Data::Microformat::hCard;
 
 use Test::More tests => 26;
 
@@ -36,7 +36,7 @@ my $simple = << 'EOF';
 </div>
 EOF
 
-ok(my $card = Data::Microformats::hCard->parse($simple));
+ok(my $card = Data::Microformat::hCard->parse($simple));
 is($card->fn, "CommerceNet");
 is($card->url, "http://www.commerce.net/");
 is($card->org->organization_name, "CommerceNet");

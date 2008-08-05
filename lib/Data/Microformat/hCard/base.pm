@@ -1,4 +1,4 @@
-package Data::Microformats::hCard::base;
+package Data::Microformat::hCard::base;
 
 use strict;
 
@@ -67,24 +67,24 @@ __END__
 
 =head1 NAME
 
-Data::Microformats::hCard::base - A base class for hCards and related modules
+Data::Microformat::hCard::base - A base class for hCards and related modules
 
 =head1 VERSION
 
-This documentation refers to Data::Microformats::hCard::base version 0.0.1.
+This documentation refers to Data::Microformat::hCard::base version 0.01.
 
 =head1 DESCRIPTION
 
-This is the base class used for a variety of modules in Data::Microformats.
+This is the base class used for a variety of modules in Data::Microformat.
 It contains several helpful methods to reduce code duplication. It shouldn't
 be instantiated on its own (as it won't do anything useful), but can be used
-as a base class for other Data::Microformats modules.
+as a base class for other Data::Microformat modules.
 
 =head1 SUBROUTINES/METHODS
 
 =head2 Creation/Output Methods
 
-=head3 Data::Microformats::hCard::base->parse($content)
+=head3 Data::Microformat::hCard::base->parse($content)
 
 This method simply takes the content passed in and makes an HTML tree out of
 it, then hands it off to the from_tree method to do the actual interpretation.

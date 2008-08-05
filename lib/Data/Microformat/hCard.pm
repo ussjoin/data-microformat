@@ -1,14 +1,14 @@
-package Data::Microformats::hCard;
-use base qw(Data::Microformats::hCard::base);
+package Data::Microformat::hCard;
+use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
 use HTML::TreeBuilder;
-use Data::Microformats::adr;
-use Data::Microformats::geo;
-use Data::Microformats::hCard::type;
-use Data::Microformats::hCard::name;
-use Data::Microformats::hCard::organization;
+use Data::Microformat::adr;
+use Data::Microformat::geo;
+use Data::Microformat::hCard::type;
+use Data::Microformat::hCard::name;
+use Data::Microformat::hCard::organization;
 
 sub from_tree
 {
@@ -34,7 +34,7 @@ sub from_tree
 			$element->delete;
 		}
 		
-		my $card = Data::Microformats::hCard->new;
+		my $card = Data::Microformat::hCard->new;
 		my @bits = $card_tree->content_list;
 		
 		foreach my $bit (@bits)
@@ -121,32 +121,32 @@ sub from_tree
 					}
 					elsif ($type eq "tel")
 					{
-						my $tel = Data::Microformats::hCard::type->from_tree($bit);
+						my $tel = Data::Microformat::hCard::type->from_tree($bit);
 						$card->tel($tel);
 					}
 					elsif ($type eq "email")
 					{
-						my $email = Data::Microformats::hCard::type->from_tree($bit);
+						my $email = Data::Microformat::hCard::type->from_tree($bit);
 						$card->email($email);
 					}
 					elsif ($type eq "n")
 					{
-						my $name = Data::Microformats::hCard::name->from_tree($bit);
+						my $name = Data::Microformat::hCard::name->from_tree($bit);
 						$card->n($name);
 					}
 					elsif ($type eq "adr")
 					{
-						my $adr = Data::Microformats::adr->from_tree($bit);
+						my $adr = Data::Microformat::adr->from_tree($bit);
 						$card->adr($adr);
 					}
 					elsif ($type eq "geo")
 					{
-						my $geo = Data::Microformats::geo->from_tree($bit);
+						my $geo = Data::Microformat::geo->from_tree($bit);
 						$card->geo($geo);
 					}
 					elsif ($type eq "org")
 					{
-						my $org = Data::Microformats::hCard::organization->from_tree($bit);
+						my $org = Data::Microformat::hCard::organization->from_tree($bit);
 						$card->org($org);
 					}
 					elsif ($type eq "url" && $bit->attr('href'))
@@ -168,7 +168,7 @@ sub from_tree
 		# Check: Implied N Optimization?
 		if (!$card->n && $card->fn && (!$card->org || (!$card->fn eq $card->org)))
 		{
-			my $n = Data::Microformats::hCard::name->new;
+			my $n = Data::Microformat::hCard::name->new;
 			my @arr = split(" ", $card->fn);
 			if ($arr[1])
 			{
@@ -191,7 +191,7 @@ sub from_tree
 		# Check: Org?
 		if (($card->org) && (($card->fn || "") eq $card->org->organization_name))
 		{
-			my $name = Data::Microformats::hCard::name->new;
+			my $name = Data::Microformat::hCard::name->new;
 			$name->family_name("");
 			$name->given_name("");
 			$name->additional_name("");
@@ -207,7 +207,7 @@ sub from_tree
 			if (($card->org && (!$card->org->organization_name eq $card->fn)) && (!$card->n) && (scalar @words == 1))
 			{
 				$card->nickname($card->fn);
-				my $name = Data::Microformats::hCard::name->new;
+				my $name = Data::Microformat::hCard::name->new;
 				$name->family_name("");
 				$name->given_name("");
 				$name->additional_name("");
@@ -679,24 +679,24 @@ sub to_hcard
 	if ($self->uid) {$ret .= "<div class=\"uid\">".$self->uid."</div>\n"};
 	if ($self->class) {$ret .= "<div class=\"class\">".$self->class."</div>\n"};
 	
-	foreach my $t ($self->adr) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"adr\">".$t."</div>\n"}};
-	foreach my $t ($self->agent) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard} else {$ret .= "<div class=\"agent\">".$t."</div>\n"}};
-	foreach my $t ($self->category) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"category\">".$t."</div>\n"}};
-	foreach my $t ($self->email) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"email\">".$t."</div>\n"}};
-	foreach my $t ($self->key) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"key\">".$t."</div>\n"}};
-	foreach my $t ($self->label) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"label\">".$t."</div>\n"}};
-	foreach my $t ($self->logo) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"logo\">".$t."</div>\n"}};
-	foreach my $t ($self->mailer) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"mailer\">".$t."</div>\n"}};
-	foreach my $t ($self->nickname) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"nickname\">".$t."</div>\n"}};
-	foreach my $t ($self->note) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"note\">".$t."</div>\n"}};
-	foreach my $t ($self->org) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"org\">".$t."</div>\n"}};
-	foreach my $t ($self->photo) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"photo\">".$t."</div>\n"}};
-	foreach my $t ($self->rev) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"rev\">".$t."</div>\n"}};
-	foreach my $t ($self->role) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"role\">".$t."</div>\n"}};
-	foreach my $t ($self->sound) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"sound\">".$t."</div>\n"}};
-	foreach my $t ($self->tel) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"tel\">".$t."</div>\n"}};
-	foreach my $t ($self->title) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"title\">".$t."</div>\n"}};
-	foreach my $t ($self->url) {if (ref($t) =~ /Data::Microformats/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"url\">".$t."</div>\n"}};
+	foreach my $t ($self->adr) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"adr\">".$t."</div>\n"}};
+	foreach my $t ($self->agent) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard} else {$ret .= "<div class=\"agent\">".$t."</div>\n"}};
+	foreach my $t ($self->category) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"category\">".$t."</div>\n"}};
+	foreach my $t ($self->email) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"email\">".$t."</div>\n"}};
+	foreach my $t ($self->key) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"key\">".$t."</div>\n"}};
+	foreach my $t ($self->label) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"label\">".$t."</div>\n"}};
+	foreach my $t ($self->logo) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"logo\">".$t."</div>\n"}};
+	foreach my $t ($self->mailer) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"mailer\">".$t."</div>\n"}};
+	foreach my $t ($self->nickname) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"nickname\">".$t."</div>\n"}};
+	foreach my $t ($self->note) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"note\">".$t."</div>\n"}};
+	foreach my $t ($self->org) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"org\">".$t."</div>\n"}};
+	foreach my $t ($self->photo) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"photo\">".$t."</div>\n"}};
+	foreach my $t ($self->rev) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"rev\">".$t."</div>\n"}};
+	foreach my $t ($self->role) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"role\">".$t."</div>\n"}};
+	foreach my $t ($self->sound) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"sound\">".$t."</div>\n"}};
+	foreach my $t ($self->tel) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"tel\">".$t."</div>\n"}};
+	foreach my $t ($self->title) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"title\">".$t."</div>\n"}};
+	foreach my $t ($self->url) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"url\">".$t."</div>\n"}};
 	$ret .="</div>\n";
 }
 
@@ -706,27 +706,27 @@ __END__
 
 =head1 NAME
 
-Data::Microformats::hCard - A module to parse and create hCards
+Data::Microformat::hCard - A module to parse and create hCards
 
 =head1 VERSION
 
-This documentation refers to Data::Microformats::hCard version 0.0.1.
+This documentation refers to Data::Microformat::hCard version 0.01.
 
 =head1 SYNOPSIS
 
-	use Data::Microformats::hCard;
+	use Data::Microformat::hCard;
 
-	my $card = Data::Microformats::hCard->parse($a_web_page);
+	my $card = Data::Microformat::hCard->parse($a_web_page);
 
 	print "The nickname we found in this hCard was:\n";
 	print $card->nickname."\n";
 
 	# To create a new hCard:
-	my $new_card = Data::Microformats::hCard->new;
+	my $new_card = Data::Microformat::hCard->new;
 	$new_card->fn("Brendan O'Connor");
 	$new_card->nickname("USSJoin");
 
-	my $new_email = Data::Microformats::hCard::type;
+	my $new_email = Data::Microformat::hCard::type;
 	$new_email->kind = "email";
 	$new_email->type = "Perl";
 	$new_email->value = "perl@ussjoin.com";
@@ -744,12 +744,12 @@ To use it to parse an existing hCard (or hCards), simply give it the content
 of the page containing them (there is no need to first eliminate extraneous
 content, as the module will handle that itself):
 
-	my $card = Data::Microformats::hCard->parse($content);
+	my $card = Data::Microformat::hCard->parse($content);
 
 If you would like to get all the hCards on the webpage, simply ask using an
 array:
 
-	my @cards = Data::Microformats::hCard->parse($content);
+	my @cards = Data::Microformat::hCard->parse($content);
 	
 The module respects nested hCards using the parsing rules defined in the spec,
 so if one hCard contains another, it will return one hCard with the other held
@@ -757,7 +757,7 @@ in the relevant subpart, rather than two top-level hCards.
 
 To create a new hCard, first create the new object:
 	
-	my $card = Data::Microformats::hCard->new;
+	my $card = Data::Microformat::hCard->new;
 	
 Then use the helper methods to add any data you would like. When you're ready
 to output the hCard, simply write
@@ -774,7 +774,7 @@ hCard property, it is recommended to consult the vCARD specification, RFC 2426.
 
 =head2 Creation/Output Methods
 
-=head3 Data::Microformats::hCard->parse($content)
+=head3 Data::Microformat::hCard->parse($content)
 
 This method simply takes the content passed in and makes an HTML tree out of
 it, then hands it off to the from_tree method to do the actual interpretation.
@@ -782,7 +782,7 @@ Should you have an L<HTML::Element|HTML::Element> tree already, there is no
 need to parse the content again; simply pass the tree's root to the from_tree
 method.
 
-=head3 Data::Microformats::hCard->from_tree($tree)
+=head3 Data::Microformat::hCard->from_tree($tree)
 
 This method takes an L<HTML::Element|HTML::Element> tree and finds hCards in
 it. It will return one or many hCards (assuming it finds them) depending on
@@ -798,7 +798,7 @@ reasonably well-formatted, enough to make parsing possible.
 
 =head3 $card->to_hcard
 
-This method, called on an instance of Data::Microformats::hCard, will return
+This method, called on an instance of Data::Microformat::hCard, will return
 an HTML representation of the hCard data present. This is most likely to be
 used when building your own hCards, but can be called on parsed content as
 well. The returned hCard is very lightly formatted; it uses only <div> tags
@@ -808,7 +808,7 @@ for markup, rather than <span> tags, and is not indented.
 
 =head3 $h->adr([$adr])
 
-This method gets the address(es) of the hCard, which should be L<Data::Microformats::adr|Data::Microformats::adr>
+This method gets the address(es) of the hCard, which should be L<Data::Microformat::adr|Data::Microformat::adr>
 objects. It can also add an additional address to the hCard.
 
 When no parameter is given, this method returns one item if called in scalar
@@ -851,7 +851,7 @@ hCards can have only one Class.
 =head3 $h->email([$email])
 
 This method gets the email(s) of the hCard, which should be 
-L<Data::Microformats::hCard::type|Data::Microformats::hCard::type>
+L<Data::Microformat::hCard::type|Data::Microformat::hCard::type>
 objects with kind = "email". It can also add an additional email to the hCard.
 
 When no parameter is given, this method returns one item if called in scalar
@@ -867,7 +867,7 @@ hCards can have only one Familiar Name.
 
 =head3 $h->geo([$geo])
 
-This method gets/sets the Geolocation of the hCard, which should be a L<Data::Microformats::geo|Data::Microformats::geo>
+This method gets/sets the Geolocation of the hCard, which should be a L<Data::Microformat::geo|Data::Microformat::geo>
 object.
 
 hCards can have only one Geolocation.
@@ -915,7 +915,7 @@ hCards can have any number of mailers.
 
 =head3 $h->n([$n])
 
-This method gets/sets the Name of the hCard, which should be a L<Data::Microformats::hCard::name|Data::Microformats::hCard::name>
+This method gets/sets the Name of the hCard, which should be a L<Data::Microformat::hCard::name|Data::Microformat::hCard::name>
 object.
 
 hCards can have only one Name.
@@ -943,7 +943,7 @@ hCards can have any number of notes.
 =head3 $h->org([$org])
 
 This method gets the organization(s) of the hCard, which should be 
-L<Data::Microformats::hCard::organization|Data::Microformats::hCard::organization>
+L<Data::Microformat::hCard::organization|Data::Microformat::hCard::organization>
 objects. It can also add an additional organization to the hCard.
 
 When no parameter is given, this method returns one item if called in scalar
@@ -1002,7 +1002,7 @@ hCards can have any number of sounds.
 =head3 $h->tel([$tel])
 
 This method gets the telephone number(s) of the hCard, which should be 
-L<Data::Microformats::hCard::type|Data::Microformats::hCard::type>
+L<Data::Microformat::hCard::type|Data::Microformat::hCard::type>
 objects with kind = "tel". It can also add an additional telephone number to the hCard.
 
 When no parameter is given, this method returns one item if called in scalar
@@ -1046,9 +1046,9 @@ hCards can have any number of urls.
 
 This module relies upon the following other modules:
 
-L<Data::Microformats::adr|Data::Microformats::adr>
+L<Data::Microformat::adr|Data::Microformat::adr>
 
-L<Data::Microformats::geo|Data::Microformats::geo>
+L<Data::Microformat::geo|Data::Microformat::geo>
 
 They are distributed in the same distribution as this module.
 

@@ -1,5 +1,5 @@
-package Data::Microformats::hCard::type;
-use base qw(Data::Microformats::hCard::base);
+package Data::Microformat::hCard::type;
+use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
@@ -14,7 +14,7 @@ sub from_tree
 	
 	return unless $tree;
 	
-	my $object = Data::Microformats::hCard::type->new;
+	my $object = Data::Microformat::hCard::type->new;
 	$object->kind($tree->attr('class'));
 	my @bits = $tree->content_list;
 	
@@ -98,22 +98,22 @@ __END__
 
 =head1 NAME
 
-Data::Microformats::hCard::type - A module to parse and create typed things within hCards
+Data::Microformat::hCard::type - A module to parse and create typed things within hCards
 
 =head1 VERSION
 
-This documentation refers to Data::Microformats::hCard::type version 0.0.1.
+This documentation refers to Data::Microformat::hCard::type version 0.01.
 
 =head1 DESCRIPTION
 
-This module exists to assist the Data::Microformats::hCard module with handling
+This module exists to assist the Data::Microformat::hCard module with handling
 typed things (emails and phone numbers) in hCards.
 
 =head1 SUBROUTINES/METHODS
 
 =head2 Creation/Output Methods
 
-=head3 Data::Microformats::hCard::type->parse($content)
+=head3 Data::Microformat::hCard::type->parse($content)
 
 This method simply takes the content passed in and makes an HTML tree out of
 it, then hands it off to the from_tree method to do the actual interpretation.
@@ -121,7 +121,7 @@ Should you have an L<HTML::Element|HTML::Element> tree already, there is no
 need to parse the content again; simply pass the tree's root to the from_tree
 method.
 
-=head3 Data::Microformats::hCard::type->from_tree($tree)
+=head3 Data::Microformat::hCard::type->from_tree($tree)
 
 This method takes an L<HTML::Element|HTML::Element> tree and finds typed things in
 it. It is usually given a tree rooted with a typed thing, but it can be given an
@@ -129,7 +129,7 @@ arbitrary tree instead.
 
 =head3 $card->to_hcard
 
-This method, called on an instance of Data::Microformats::hCard::type, will return
+This method, called on an instance of Data::Microformat::hCard::type, will return
 an hCard HTML representation of the typed data present. The returned name is very 
 lightly formatted; it uses only <div> tags for markup, rather than <span> tags, 
 and is not indented.

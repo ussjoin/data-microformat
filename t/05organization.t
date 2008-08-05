@@ -1,7 +1,7 @@
 #!perl -w
 
 use strict;
-use Data::Microformats::hCard::organization;
+use Data::Microformat::hCard::organization;
 
 use Test::More tests => 7;
 
@@ -12,7 +12,7 @@ my $simple = << 'EOF';
 </span>
 EOF
 
-ok(my $org = Data::Microformats::hCard::organization->parse($simple));
+ok(my $org = Data::Microformat::hCard::organization->parse($simple));
 
 is($org->organization_name, "Zaphod for President");
 is($org->organization_unit, "Dirty Tricks");
@@ -31,7 +31,7 @@ my $medium = << 'EOF';
 
 EOF
 
-ok($org = Data::Microformats::hCard::organization->parse($medium));
+ok($org = Data::Microformat::hCard::organization->parse($medium));
 
 is($org->organization_name, "Zaphod for President");
 

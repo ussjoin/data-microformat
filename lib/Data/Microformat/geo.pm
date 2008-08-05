@@ -1,5 +1,5 @@
-package Data::Microformats::geo;
-use base qw(Data::Microformats::hCard::base);
+package Data::Microformat::geo;
+use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
@@ -18,7 +18,7 @@ sub from_tree
 	
 	foreach my $geo_tree (@geo_trees)
 	{
-		my $geo = Data::Microformats::geo->new;
+		my $geo = Data::Microformat::geo->new;
 		my @bits = $geo_tree->descendants;
 	
 		foreach my $bit (@bits)
@@ -69,17 +69,17 @@ __END__
 
 =head1 NAME
 
-Data::Microformats::geo - A module to parse and create geos
+Data::Microformat::geo - A module to parse and create geos
 
 =head1 VERSION
 
-This documentation refers to Data::Microformats::geo version 0.0.1.
+This documentation refers to Data::Microformat::geo version 0.01.
 
 =head1 SYNOPSIS
 
-	use Data::Microformats::geo;
+	use Data::Microformat::geo;
 
-	my $geo = Data::Microformats::geo->parse($a_web_page);
+	my $geo = Data::Microformat::geo->parse($a_web_page);
 
 	print "The latitude we found in this geo was:\n";
 	print $adr->latitude."\n";
@@ -88,7 +88,7 @@ This documentation refers to Data::Microformats::geo version 0.0.1.
 	print $adr->longitude."\n";
 
 	# To create a new geo:
-	my $new_geo = Data::Microformats::geo->new;
+	my $new_geo = Data::Microformat::geo->new;
 	$new_adr->latitude("37.779598");
 	$new_adr->longitude("-122.398453");
 
@@ -107,16 +107,16 @@ To use it to parse an existing geo (or geos), simply give it the content
 of the page containing them (there is no need to first eliminate extraneous
 content, as the module will handle that itself):
 
-	my $geo = Data::Microformats::geo->parse($content);
+	my $geo = Data::Microformat::geo->parse($content);
 
 If you would like to get all the geos on the webpage, simply ask using an
 array:
 
-	my @geos = Data::Microformats::geo->parse($content);
+	my @geos = Data::Microformat::geo->parse($content);
 
 To create a new geo, first create the new object:
 	
-	my $geo = Data::Microformats::geo->new;
+	my $geo = Data::Microformat::geo->new;
 	
 Then use the helper methods to add any data you would like. When you're ready
 to output the geo in the hCard HTML format, simply write
@@ -130,7 +130,7 @@ exclusively with the relevant class names.
 
 =head2 Creation/Output Methods
 
-=head3 Data::Microformats::geo->parse($content)
+=head3 Data::Microformat::geo->parse($content)
 
 This method simply takes the content passed in and makes an HTML tree out of
 it, then hands it off to the from_tree method to do the actual interpretation.
@@ -138,7 +138,7 @@ Should you have an L<HTML::Element|HTML::Element> tree already, there is no
 need to parse the content again; simply pass the tree's root to the from_tree
 method.
 
-=head3 Data::Microformats::geo->from_tree($tree)
+=head3 Data::Microformat::geo->from_tree($tree)
 
 This method takes an L<HTML::Element|HTML::Element> tree and finds geos in
 it. It will return one or many geos (assuming it finds them) depending on
@@ -152,7 +152,7 @@ reasonably well-formatted, enough to make parsing possible.
 
 =head3 $card->to_hcard
 
-This method, called on an instance of Data::Microformats::geo, will return
+This method, called on an instance of Data::Microformat::geo, will return
 an hCard HTML representation of the geo data present. This is most likely to be
 used when building your own geos, but can be called on parsed content as
 well. The returned geo is very lightly formatted; it uses only <div> tags

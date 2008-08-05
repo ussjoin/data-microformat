@@ -1,7 +1,7 @@
 #!perl -w
 
 use strict;
-use Data::Microformats::hCard::type;
+use Data::Microformat::hCard::type;
 
 use Test::More tests => 10;
 
@@ -13,7 +13,7 @@ my $simple = << 'EOF';
 </span>
 EOF
 
-ok(my $type = Data::Microformats::hCard::type->parse($simple));
+ok(my $type = Data::Microformat::hCard::type->parse($simple));
 
 is($type->kind, "tel");
 is($type->type, "Home");
@@ -31,7 +31,7 @@ my $medium = << 'EOF';
 <span class="email"><span class="type">Work</span> test@example.com</span>
 EOF
 
-ok($type = Data::Microformats::hCard::type->parse($medium));
+ok($type = Data::Microformat::hCard::type->parse($medium));
 
 is($type->kind, "email");
 is($type->type, "Work");

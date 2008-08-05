@@ -1,7 +1,7 @@
 #!perl -w
 
 use strict;
-use Data::Microformats::geo;
+use Data::Microformat::geo;
 
 use Test::More tests => 4;
 
@@ -12,7 +12,7 @@ my $simple = << 'EOF';
 </div>
 EOF
 
-ok(my $geo = Data::Microformats::geo->parse($simple));
+ok(my $geo = Data::Microformat::geo->parse($simple));
 
 is($geo->latitude, "37.779598");
 is($geo->longitude, "-122.398453");

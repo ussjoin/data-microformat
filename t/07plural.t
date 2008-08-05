@@ -1,7 +1,7 @@
 #! perl -w
 
 use strict;
-use Data::Microformats::hCard;
+use Data::Microformat::hCard;
 
 use Test::More tests => 95;
 
@@ -72,9 +72,9 @@ my $simple = << 'EOF';
 </div>
 EOF
 
-ok(my @cards = Data::Microformats::hCard->parse($simple));
+ok(my @cards = Data::Microformat::hCard->parse($simple));
 is(scalar @cards, 2);
-ok(my $card = Data::Microformats::hCard->parse($simple));
+ok(my $card = Data::Microformat::hCard->parse($simple));
 is_deeply($card, $cards[0]);
 isnt($cards[0], $cards[1]);
 #For each item, check that if I read it into an array I get two, if I read it into a scalar I get one which == arr[0].

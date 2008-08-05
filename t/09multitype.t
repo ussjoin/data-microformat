@@ -1,7 +1,7 @@
 #! perl -w
 
 use strict;
-use Data::Microformats::hCard;
+use Data::Microformat::hCard;
 
 use Test::More tests => 14;
 
@@ -24,7 +24,7 @@ my $simple = << 'EOF';
 EOF
 
 
-ok(my $card = Data::Microformats::hCard->parse($simple));
+ok(my $card = Data::Microformat::hCard->parse($simple));
 is($card->fn, "Alice Adams");
 ok(my @arr = $card->tel->type);
 is(scalar @arr, 2);

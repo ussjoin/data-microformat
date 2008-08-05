@@ -1,5 +1,5 @@
-package Data::Microformats::adr;
-use base qw(Data::Microformats::hCard::base);
+package Data::Microformat::adr;
+use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
@@ -18,7 +18,7 @@ sub from_tree
 	
 	foreach my $adr_tree (@address_trees)
 	{
-		my $adr = Data::Microformats::adr->new;
+		my $adr = Data::Microformat::adr->new;
 		
 		my @bits = $adr_tree->descendants;
 		
@@ -109,23 +109,23 @@ __END__
 
 =head1 NAME
 
-Data::Microformats::adr - A module to parse and create adrs
+Data::Microformat::adr - A module to parse and create adrs
 
 =head1 VERSION
 
-This documentation refers to Data::Microformats::adr version 0.0.1.
+This documentation refers to Data::Microformat::adr version 0.01.
 
 =head1 SYNOPSIS
 
-	use Data::Microformats::adr;
+	use Data::Microformat::adr;
 
-	my $adr = Data::Microformats::adr->parse($a_web_page);
+	my $adr = Data::Microformat::adr->parse($a_web_page);
 
 	print "The street address we found in this adr was:\n";
 	print $adr->street_address."\n";
 
 	# To create a new adr:
-	my $new_adr = Data::Microformats::adr->new;
+	my $new_adr = Data::Microformat::adr->new;
 	$new_adr->street_address("548 4th St.");
 	$new_adr->locality("San Francisco");
 	$new_adr->region("CA");
@@ -147,16 +147,16 @@ To use it to parse an existing adr (or adrs), simply give it the content
 of the page containing them (there is no need to first eliminate extraneous
 content, as the module will handle that itself):
 
-	my $adr = Data::Microformats::adr->parse($content);
+	my $adr = Data::Microformat::adr->parse($content);
 
 If you would like to get all the adrs on the webpage, simply ask using an
 array:
 
-	my @adrs = Data::Microformats::adr->parse($content);
+	my @adrs = Data::Microformat::adr->parse($content);
 
 To create a new adr, first create the new object:
 	
-	my $adr = Data::Microformats::adr->new;
+	my $adr = Data::Microformat::adr->new;
 	
 Then use the helper methods to add any data you would like. When you're ready
 to output the adr in the hCard HTML format, simply write
@@ -170,7 +170,7 @@ exclusively with the relevant class names.
 
 =head2 Creation/Output Methods
 
-=head3 Data::Microformats::adr->parse($content)
+=head3 Data::Microformat::adr->parse($content)
 
 This method simply takes the content passed in and makes an HTML tree out of
 it, then hands it off to the from_tree method to do the actual interpretation.
@@ -178,7 +178,7 @@ Should you have an L<HTML::Element|HTML::Element> tree already, there is no
 need to parse the content again; simply pass the tree's root to the from_tree
 method.
 
-=head3 Data::Microformats::hCard->from_tree($tree)
+=head3 Data::Microformat::hCard->from_tree($tree)
 
 This method takes an L<HTML::Element|HTML::Element> tree and finds adrs in
 it. It will return one or many adrs (assuming it finds them) depending on
@@ -192,7 +192,7 @@ reasonably well-formatted, enough to make parsing possible.
 
 =head3 $adr->to_hcard
 
-This method, called on an instance of Data::Microformats::adr, will return
+This method, called on an instance of Data::Microformat::adr, will return
 an hCard HTML representation of the adr data present. This is most likely to be
 used when building your own adrs, but can be called on parsed content as
 well. The returned adr is very lightly formatted; it uses only <div> tags

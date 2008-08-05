@@ -1,7 +1,7 @@
 #!perl -w
 
 use strict;
-use Data::Microformats::adr;
+use Data::Microformat::adr;
 
 use Test::More tests => 8;
 
@@ -17,7 +17,7 @@ my $simple = << 'EOF';
 </div>
 EOF
 
-ok(my $adr = Data::Microformats::adr->parse($simple));
+ok(my $adr = Data::Microformat::adr->parse($simple));
 
 is($adr->street_address, "665 3rd St.");
 is($adr->extended_address, "Suite 207");

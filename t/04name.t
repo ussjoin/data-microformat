@@ -1,7 +1,7 @@
 #!perl -w
 
 use strict;
-use Data::Microformats::hCard::name;
+use Data::Microformat::hCard::name;
 
 use Test::More tests => 7;
 
@@ -15,7 +15,7 @@ my $simple = << 'EOF';
 </span>
 EOF
 
-ok(my $name = Data::Microformats::hCard::name->parse($simple));
+ok(my $name = Data::Microformat::hCard::name->parse($simple));
 
 
 is($name->family_name, "Pag");
