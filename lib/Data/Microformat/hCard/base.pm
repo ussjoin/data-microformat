@@ -17,13 +17,11 @@ sub new
 	my $singulars = ();
 	foreach my $field ($class->singular_fields)
 	{
-		print STDERR "Adding SINGULAR $field.\n";
 		$fields->{$field} = undef;
 		$singulars->{$field} = 1;
 	}
 	foreach my $field ($class->plural_fields)
 	{
-		print STDERR "Adding PLURAL $field.\n";
 		$fields->{$field} = undef;
 	}
 	
@@ -51,7 +49,7 @@ sub AUTOLOAD
 	
 	if (exists $self->{$name})
 	{
-		if ($self->{_singulars}{$name})
+		if (!$self->{_singulars}{$name})
 		{
 			if ($parameter)
 			{
@@ -60,19 +58,22 @@ sub AUTOLOAD
 					$self->{$name} = [];
 				}
 				my $temp = $self->{$name};
+				$parameter =~ s/^\s//;
+				$parameter =~ s/\s$//;
 				push(@$temp, $parameter);
 			}
 			else
 			{
 				if (defined $self->{$name})
 				{
+					my $temp = $self->{$name};
 					if (wantarray)
 					{
-						return $self->{$name};
+						return @$temp;
 					}
 					else
 					{
-						return $self->{$name}[0];
+						return @$temp[0];
 					}
 				}
 				else
@@ -85,7 +86,12 @@ sub AUTOLOAD
 		{
 			if ($parameter)
 			{
-				$self->{$name} = $parameter;
+				if (!defined $self->{$name}) # Drop all but the first saved singular thing
+				{
+					$parameter =~ s/^\s//;
+					$parameter =~ s/\s$//;
+					$self->{$name} = $parameter;
+				}
 			}
 			else
 			{
@@ -98,6 +104,7 @@ sub AUTOLOAD
 		carp(ref($self)." does not have a parameter called $name.\n") unless $name =~ m/DESTROY/;
 	}
 }
+
 sub parse
 {
 	my $class = shift;
@@ -123,6 +130,7 @@ sub _trim
 {
 	my $class = shift;
 	my $content = shift;
+	
 	if ($content)
 	{
 		$content =~ s/^\s//;
