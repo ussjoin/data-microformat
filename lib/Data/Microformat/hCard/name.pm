@@ -132,11 +132,17 @@ L<HTML::TreeBuilder|HTML::TreeBuilder>
 
 Which can be obtained from CPAN.
 
-=head1 BUGS AND LIMITATIONS
+=head1 AUTHOR
 
-There are no known bugs in this module.
-Please report problems to Brendan O'Connor (perl@ussjoin.com).
-Patches are most welcome.
+Brendan O'Connor, C<< <perl at ussjoin.com> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests to 
+C<bug-data-microformat at rt.cpan.org>, or through the web interface at 
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Data-Microformat>.  I will be
+notified,and then you'll automatically be notified of progress on your bug as I
+make changes.
 
 =head1 COPYRIGHT
 
@@ -144,7 +150,3 @@ This library is free software; you can redistribute it and/or modify it under th
 
 This program is distributed in the hope that it will be useful, but without any warranty; without even the
 implied warranty of merchantability or fitness for a particular purpose.
-
-=head1 AUTHOR
-
-Brendan O'Connor (perl@ussjoin.com)
