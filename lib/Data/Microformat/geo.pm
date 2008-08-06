@@ -7,6 +7,10 @@ our $VERSION = "0.01";
 
 use HTML::TreeBuilder;
 
+sub class_name { "geo" }
+sub plural_fields { }
+sub singular_fields { qw(latitude longitude) }
+
 sub from_tree
 {
 	my $class = shift;
@@ -52,9 +56,6 @@ sub from_tree
 	}
 
 }
-
-sub latitude { my $self = shift; if (@_) { $self->{latitude} = shift } return $self->{latitude}; }
-sub longitude { my $self = shift; if (@_) { $self->{longitude} = shift } return $self->{longitude}; }
 
 sub to_hcard
 {

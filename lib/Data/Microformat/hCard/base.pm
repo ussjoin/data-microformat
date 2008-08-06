@@ -5,12 +5,29 @@ use strict;
 our $VERSION = "0.01";
 
 use HTML::TreeBuilder;
+use Carp;
+
+sub fields { return { latitude => undef, longitude => undef, }; }
 
 sub new
 {
 	my $class = shift;
 	my %opts  = @_;
-	my $self  = bless { config => {%opts} }, $class;
+	my $fields = ();
+	my $singulars = ();
+	foreach my $field ($class->singular_fields)
+	{
+		print STDERR "Adding SINGULAR $field.\n";
+		$fields->{$field} = undef;
+		$singulars->{$field} = 1;
+	}
+	foreach my $field ($class->plural_fields)
+	{
+		print STDERR "Adding PLURAL $field.\n";
+		$fields->{$field} = undef;
+	}
+	
+	my $self  = bless { _singulars => $singulars, %$fields, config => {%opts} }, $class;
 	$self->_init();
 	return $self;
 }
@@ -20,6 +37,75 @@ sub _init
 	my $self = shift;
 }
 
+our $AUTOLOAD;
+
+sub AUTOLOAD 
+{
+	my $self = shift;
+	my $parameter = shift;
+	
+	my $name = $AUTOLOAD;
+	$name =~ s/.*://;   # strip fully-qualified portion
+
+	my $class_name = $self->class_name;
+
+	#Do we have that field in singulars?
+	
+	print STDERR "Request for $name\n";
+	
+	if (exists $self->{$name})
+	{
+		if ($self->{_singulars}{$name})
+		{
+			print STDERR "$name is singular.\n";
+		
+			if ($parameter)
+			{
+				if (!$self->{$name})
+				{
+					$self->{$name} = [];
+				}
+				my $temp = $self->{$name};
+				push(@$temp, $parameter);
+			}
+			else
+			{
+				if (defined $self->{$name})
+				{
+					if (wantarray)
+					{
+						return $self->{$name};
+					}
+					else
+					{
+						return $self->{$name}[0];
+					}
+				}
+				else
+				{
+					return undef;
+				}
+			}
+		}
+		else
+		{
+			if ($parameter)
+			{
+				print STDERR "Setting $name to $parameter.\n";
+				$self->{$name} = $parameter;
+			}
+			else
+			{
+				print STDERR "Retrieving $name.\n";
+				return $self->{$name};
+			}
+		}
+	}
+	else
+	{
+		carp("This does not have a parameter called $name.\n") unless $name =~ m/DESTROY/;
+	}
+}
 sub parse
 {
 	my $class = shift;

@@ -7,6 +7,10 @@ our $VERSION = "0.01";
 
 use HTML::TreeBuilder;
 
+sub class_name { "REPLACE_WITH_KIND" }
+sub plural_fields { qw(type) }
+sub singular_fields { qw(post_office_box extended_address street_address locality region postal_code country_name) }
+
 sub from_tree
 {
 	my $class = shift;
@@ -55,37 +59,37 @@ sub from_tree
 	}
 }
 
-sub type
-{ 
-	my $self = shift;
-	if (!$self->{type})
-	{
-		$self->{type} = [];
-	}
-	my $type = $self->{type};
-	
-	if (@_) 
-	{ 
-		my $new = shift;
-		push (@$type, $new);
-	} 
-	if (wantarray)
-	{
-		return @$type; 
-	}
-	else
-	{
-		return @$type[0];
-	}
-}
+#sub type
+#{ 
+#	my $self = shift;
+#	if (!$self->{type})
+#	{
+#		$self->{type} = [];
+#	}
+#	my $type = $self->{type};
+#	
+#	if (@_) 
+#	{ 
+#		my $new = shift;
+#		push (@$type, $new);
+#	} 
+#	if (wantarray)
+#	{
+#		return @$type; 
+#	}
+#	else
+#	{
+#		return @$type[0];
+#	}
+#}
 
-sub post_office_box { my $self = shift; if (@_) { $self->{post_office_box} = shift } return $self->{post_office_box}; }
-sub extended_address { my $self = shift; if (@_) { $self->{extended_address} = shift } return $self->{extended_address}; }
-sub street_address { my $self = shift; if (@_) { $self->{street_address} = shift } return $self->{street_address}; }
-sub locality { my $self = shift; if (@_) { $self->{locality} = shift } return $self->{locality}; }
-sub region { my $self = shift; if (@_) { $self->{region} = shift } return $self->{region}; }
-sub postal_code { my $self = shift; if (@_) { $self->{postal_code} = shift } return $self->{postal_code}; }
-sub country_name { my $self = shift; if (@_) { $self->{country_name} = shift } return $self->{country_name}; }
+#sub post_office_box { my $self = shift; if (@_) { $self->{post_office_box} = shift } return $self->{post_office_box}; }
+#sub extended_address { my $self = shift; if (@_) { $self->{extended_address} = shift } return $self->{extended_address}; }
+#sub street_address { my $self = shift; if (@_) { $self->{street_address} = shift } return $self->{street_address}; }
+#sub locality { my $self = shift; if (@_) { $self->{locality} = shift } return $self->{locality}; }
+#sub region { my $self = shift; if (@_) { $self->{region} = shift } return $self->{region}; }
+#sub postal_code { my $self = shift; if (@_) { $self->{postal_code} = shift } return $self->{postal_code}; }
+#sub country_name { my $self = shift; if (@_) { $self->{country_name} = shift } return $self->{country_name}; }
 
 sub to_hcard
 {
