@@ -7,6 +7,10 @@ our $VERSION = "0.01";
 
 use HTML::TreeBuilder;
 
+sub class_name { "org" }
+sub plural_fields { qw() }
+sub singular_fields { qw(organization_name organization_unit) }
+
 sub from_tree
 {
 	my $class = shift;
@@ -49,9 +53,6 @@ sub from_tree
 	}
 	return $object;
 }
-
-sub organization_name { my $self = shift; if (@_) { $self->{organization_name} = shift } return $self->{organization_name}; }
-sub organization_unit { my $self = shift; if (@_) { $self->{organization_unit} = shift } return $self->{organization_unit}; }
 
 sub to_hcard
 {

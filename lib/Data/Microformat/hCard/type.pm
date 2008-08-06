@@ -7,6 +7,10 @@ our $VERSION = "0.01";
 
 use HTML::TreeBuilder;
 
+sub class_name { "REPLACE_WITH_KIND" }
+sub plural_fields { qw(type) }
+sub singular_fields { qw(value kind) }
+
 sub from_tree
 {
 	my $class = shift;
@@ -54,33 +58,6 @@ sub from_tree
 	}
 	return $object;
 }
-
-sub type
-{ 
-	my $self = shift;
-	if (!$self->{type})
-	{
-		$self->{type} = [];
-	}
-	my $type = $self->{type};
-	
-	if (@_) 
-	{ 
-		my $new = shift;
-		push (@$type, $new);
-	} 
-	if (wantarray)
-	{
-		return @$type; 
-	}
-	else
-	{
-		return @$type[0];
-	}
-}
-
-sub value { my $self = shift; if (@_) { $self->{value} = shift } return $self->{value}; }
-sub kind { my $self = shift; if (@_) { $self->{kind} = shift } return $self->{kind}; }
 
 sub to_hcard
 {

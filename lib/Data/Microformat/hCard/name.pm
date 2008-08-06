@@ -7,6 +7,10 @@ our $VERSION = "0.01";
 
 use HTML::TreeBuilder;
 
+sub class_name { "n" }
+sub plural_fields { qw() }
+sub singular_fields { qw(family_name given_name additional_name honorific_prefix honorific_suffix) }
+
 sub from_tree
 {
 	my $class = shift;
@@ -41,12 +45,6 @@ sub from_tree
 	}
 	return $object;
 }
-
-sub family_name { my $self = shift; if (@_) { $self->{family_name} = shift } return $self->{family_name}; }
-sub given_name { my $self = shift; if (@_) { $self->{given_name} = shift } return $self->{given_name}; }
-sub additional_name { my $self = shift; if (@_) { $self->{additional_name} = shift } return $self->{additional_name}; }
-sub honorific_prefix { my $self = shift; if (@_) { $self->{honorific_prefix} = shift } return $self->{honorific_prefix}; }
-sub honorific_suffix { my $self = shift; if (@_) { $self->{honorific_suffix} = shift } return $self->{honorific_suffix}; }
 
 sub to_hcard
 {

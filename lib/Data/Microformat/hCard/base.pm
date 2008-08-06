@@ -45,20 +45,14 @@ sub AUTOLOAD
 	my $parameter = shift;
 	
 	my $name = $AUTOLOAD;
-	$name =~ s/.*://;   # strip fully-qualified portion
+	$name =~ s/.*://;
 
 	my $class_name = $self->class_name;
-
-	#Do we have that field in singulars?
-	
-	print STDERR "Request for $name\n";
 	
 	if (exists $self->{$name})
 	{
 		if ($self->{_singulars}{$name})
 		{
-			print STDERR "$name is singular.\n";
-		
 			if ($parameter)
 			{
 				if (!$self->{$name})
@@ -91,19 +85,17 @@ sub AUTOLOAD
 		{
 			if ($parameter)
 			{
-				print STDERR "Setting $name to $parameter.\n";
 				$self->{$name} = $parameter;
 			}
 			else
 			{
-				print STDERR "Retrieving $name.\n";
 				return $self->{$name};
 			}
 		}
 	}
 	else
 	{
-		carp("This does not have a parameter called $name.\n") unless $name =~ m/DESTROY/;
+		carp(ref($self)." does not have a parameter called $name.\n") unless $name =~ m/DESTROY/;
 	}
 }
 sub parse
