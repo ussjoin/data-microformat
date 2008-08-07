@@ -16,7 +16,7 @@ sub from_tree
 	my $class = shift;
 	my $tree = shift;
 	
-	$tree = $tree->look_down("class", qr/org/);
+	$tree = $tree->look_down("class", qr/(^|\s)org($|\s)/);
 	
 	return unless $tree;
 	
@@ -96,15 +96,31 @@ an hCard HTML representation of the name data present. The returned organization
 lightly formatted; it uses only <div> tags for markup, rather than <span> tags, 
 and is not indented.
 
-=head2 Accessor Methods
+=head2 Data
 
-=head3 $o->organization_name([$organization_name])
+=head3 class_name
 
-This method gets/sets the organization name, which is a string.
+The hCard class name for an organization; to wit, "org."
 
-=head3 $o->organization_unit([$organization_unit])
+=head3 singular_fields
 
-This method gets/sets the organization unit, which is a string.
+This is a method to list all the fields on an organization that can hold exactly one value.
+
+On organization, they are as follows:
+
+=head4 organization_name
+
+The name of the organization.
+
+=head4 organization_unit
+
+The division within the organization.
+
+=head3 plural_fields
+
+This is a method to list all the fields on an organization that can hold multiple values.
+
+There are none for organizations.
 
 =head1 DEPENDENCIES
 

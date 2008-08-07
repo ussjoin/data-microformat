@@ -11,55 +11,6 @@ sub class_name { "adr" }
 sub plural_fields { qw(type) }
 sub singular_fields { qw(post_office_box street_address extended_address locality region postal_code country_name) }
 
-sub from_tree
-{
-	my $class = shift;
-	my $tree = shift;
-	
-	my @addresses;
-	
-	my @address_trees = $tree->look_down("class", "adr");
-	
-	return unless (@address_trees);
-	
-	foreach my $adr_tree (@address_trees)
-	{
-		my $adr = Data::Microformat::adr->new;
-		
-		my @bits = $adr_tree->descendants;
-		
-		foreach my $bit (@bits)
-		{
-			next unless $bit->attr('class');
-			
-			my @types = split(" ", $bit->attr('class'));
-			foreach my $type (@types)
-			{
-				$type =~ s/\-/\_/g;
-				$type = $class->_trim($type);
-				my @cons = $bit->content_list;
-				
-				my $data = $class->_trim($cons[0]);
-				if ($bit->tag eq "abbr" && $bit->attr('title'))
-				{
-					$data = $class->_trim($bit->attr('title'));
-				}
-				$adr->$type($data);
-			}
-		}
-		push(@addresses, $adr)
-	}
-	if (wantarray)
-	{
-		return @addresses;
-	}
-	else
-	{
-		return $addresses[0];
-	}
-}
-
-
 1;
 
 __END__
@@ -155,42 +106,55 @@ used when building your own adrs, but can be called on parsed content as
 well. The returned adr is very lightly formatted; it uses only <div> tags
 for markup, rather than <span> tags, and is not indented.
 
-=head2 Accessor Methods
+=head2 Data
 
-=head3 $a->type([$type])
+=head3 class_name
 
-This method gets the type(s) of address (such as "Home" or "Work"), which is
-a string. It can also add a new type to the address.
+The hCard class name for an address; to wit, "adr."
 
-Adrs can have any number of types.
+=head3 singular_fields
 
-=head3 $a->post_office_box([$post_office_box])
+This is a method to list all the fields on an address that can hold exactly one value.
 
-This method gets/sets the Post Office box of the address, which is a string.
+On address, they are as follows:
 
-=head3 $a->street_address([$street_address])
+=head4 post_office_box
 
-This method gets/sets the street address, which is a string.
+The Post Office box, such as "P.O. Box 1234."
 
-=head3 $a->extended_address([$extended_address])
+=head4 street_address
 
-This method gets/sets the second line of the address, which is a string.
+The street address, such as "1234 Main St."
 
-=head3 $a->locality([$locality])
+=head4 extended_address
 
-This method gets/sets the locality/city of the address, which is a string.
+The second line of the address, such as "Suite 1."
 
-=head3 $a->region([$region])
+=head4 locality
 
-This method gets/sets the region/state of the address, which is a string.
+The city.
 
-=head3 $a->postal_code([$postal_code])
+=head4 region
 
-This method gets/sets the postal code of the address, which is a string.
+The region/state.
 
-=head3 $a->country_name([$country_name])
+=head4 postal_code
 
-This method gets/sets the country name of the address, which is a string.
+The postal code.
+
+=head4 country_name
+
+The name of the country, such as "U.S.A."
+
+=head3 plural_fields
+
+This is a method to list all the fields on an address that can hold multiple values.
+
+On address, they are as follows:
+
+=head4 type
+
+The type of address, such as "Home" or "Work."
 
 =head1 DEPENDENCIES
 

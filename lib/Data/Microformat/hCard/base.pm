@@ -144,7 +144,50 @@ sub _trim
 
 sub from_tree
 {
-	die("Subclass has not implemented from_tree\n");
+	my $class = shift;
+	my $tree = shift;
+	
+	my @objects;
+	my $class_name = $class->class_name;
+	my @object_trees = $tree->look_down("class", qr/(^|\s)$class_name($|\s)/);
+	
+	return unless (@object_trees);
+	
+	foreach my $object_tree (@object_trees)
+	{
+		my $object = $class->new;
+		
+		my @bits = $object_tree->descendants;
+		
+		foreach my $bit (@bits)
+		{
+			next unless $bit->attr('class');
+			
+			my @types = split(" ", $bit->attr('class'));
+			foreach my $type (@types)
+			{
+				$type =~ s/\-/\_/g;
+				$type = $class->_trim($type);
+				my @cons = $bit->content_list;
+				
+				my $data = $class->_trim($cons[0]);
+				if ($bit->tag eq "abbr" && $bit->attr('title'))
+				{
+					$data = $class->_trim($bit->attr('title'));
+				}
+				$object->$type($data);
+			}
+		}
+		push(@objects, $object)
+	}
+	if (wantarray)
+	{
+		return @objects;
+	}
+	else
+	{
+		return $objects[0];
+	}
 }
 
 sub to_hcard

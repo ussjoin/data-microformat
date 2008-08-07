@@ -11,53 +11,6 @@ sub class_name { "geo" }
 sub plural_fields { }
 sub singular_fields { qw(latitude longitude) }
 
-sub from_tree
-{
-	my $class = shift;
-	my $tree = shift;
-
-	my @geo_trees = $tree->look_down("class", "geo");
-	
-	return unless @geo_trees;
-	
-	my @geos;
-	
-	foreach my $geo_tree (@geo_trees)
-	{
-		my $geo = Data::Microformat::geo->new;
-		my @bits = $geo_tree->descendants;
-	
-		foreach my $bit (@bits)
-		{
-			next unless $bit->attr('class');
-			my @types = split(" ", $bit->attr('class'));
-			foreach my $type (@types)
-			{
-				$type = $class->_trim($type);
-				my @cons = $bit->content_list;
-				my $data = $class->_trim($cons[0]);
-				if ($bit->tag eq "abbr" && $bit->attr('title'))
-				{
-					$data = $class->_trim($bit->attr('title'));
-				}
-				$geo->$type($data);
-			}
-		}
-		push(@geos, $geo);
-	}
-	
-	if (wantarray)
-	{
-		return @geos;
-	}
-	else
-	{
-		return $geos[0];
-	}
-
-}
-
-
 1;
 
 __END__

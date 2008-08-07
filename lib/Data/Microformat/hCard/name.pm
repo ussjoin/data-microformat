@@ -11,41 +11,6 @@ sub class_name { "n" }
 sub plural_fields { qw() }
 sub singular_fields { qw(honorific_prefix given_name additional_name family_name honorific_suffix) }
 
-sub from_tree
-{
-	my $class = shift;
-	my $tree = shift;
-	
-	$tree = $tree->look_down("class", "n");
-	
-	return unless $tree;
-	
-	my $object = Data::Microformat::hCard::name->new;
-	my @bits = $tree->content_list;
-	
-	foreach my $bit (@bits)
-	{
-		if (ref($bit) eq "HTML::Element")
-		{
-			next unless $bit->attr('class');
-			my @types = split(" ", $bit->attr('class'));
-			foreach my $type (@types)
-			{
-				$type =~ s/\-/\_/;
-				$type = $class->_trim($type);
-				my @cons = $bit->content_list;
-				my $data = $class->_trim($cons[0]);
-				if ($bit->tag eq "abbr" && $bit->attr('title'))
-				{
-					$data = $class->_trim($bit->attr('title'));
-				}
-				$object->$type($data);
-			}
-		}
-	}
-	return $object;
-}
-
 1;
 
 __END__
