@@ -3,10 +3,6 @@ use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
-our $VERSION = "0.01";
-
-use HTML::TreeBuilder;
-
 sub class_name { "geo" }
 sub plural_fields { }
 sub singular_fields { qw(latitude longitude) }
@@ -76,54 +72,29 @@ exclusively with the relevant class names.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 Creation/Output Methods
+=head2 class_name
 
-=head3 Data::Microformat::geo->parse($content)
+The hCard class name for a geolocation; to wit, "geo."
 
-This method simply takes the content passed in and makes an HTML tree out of
-it, then hands it off to the from_tree method to do the actual interpretation.
-Should you have an L<HTML::Element|HTML::Element> tree already, there is no 
-need to parse the content again; simply pass the tree's root to the from_tree
-method.
+=head2 singular_fields
 
-=head3 Data::Microformat::geo->from_tree($tree)
+This is a method to list all the fields on a geo that can hold exactly one value.
 
-This method takes an L<HTML::Element|HTML::Element> tree and finds geos in
-it. It will return one or many geos (assuming it finds them) depending on
-the call; if called in array context, it will return all that it finds, and if
-called in scalar context, it will return just one.
+They are as follows:
 
-The module tries hard not to require absolute adherence to the geo spec, but
-there is only so much flexibility it can have. It does not require that all the
-"required" information be present in an geo-- just that what is there be
-reasonably well-formatted, enough to make parsing possible.
+=head3 latitude
 
-=head3 $card->to_hcard
+The latitude of the encoded location.
 
-This method, called on an instance of Data::Microformat::geo, will return
-an hCard HTML representation of the geo data present. This is most likely to be
-used when building your own geos, but can be called on parsed content as
-well. The returned geo is very lightly formatted; it uses only <div> tags
-for markup, rather than <span> tags, and is not indented.
+=head3 longitude
 
-=head2 Accessor Methods
+The longitude of the encoded location.
 
-=head3 $g->latitude([$latitude])
+=head2 plural_fields
 
-This method gets/sets the latitude of the geo, which is a string.
+This is a method to list all the fields on an address that can hold multiple values.
 
-=head3 $g->longitude([$longitude])
-
-This method gets/sets the longitude of the geo, which is a string.
-
-
-=head1 DEPENDENCIES
-
-This module relies upon the following other modules:
-
-L<HTML::TreeBuilder|HTML::TreeBuilder>
-
-Which can be obtained from CPAN.
+There are none for a geo.
 
 =head1 AUTHOR
 

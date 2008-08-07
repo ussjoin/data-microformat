@@ -3,8 +3,6 @@ use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
-our $VERSION = "0.01";
-
 use HTML::TreeBuilder;
 
 sub class_name { "org" }
@@ -73,50 +71,30 @@ organizations in hCards.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 Creation/Output Methods
+=head2 Data::Microformat::organization->from_tree($tree)
 
-=head3 Data::Microformat::organization->parse($content)
+This method overrides but provides the same functionality as the
+method of the same name in L<Data::Microformat::hCard::base>.
 
-This method simply takes the content passed in and makes an HTML tree out of
-it, then hands it off to the from_tree method to do the actual interpretation.
-Should you have an L<HTML::Element|HTML::Element> tree already, there is no 
-need to parse the content again; simply pass the tree's root to the from_tree
-method.
-
-=head3 Data::Microformat::organization->from_tree($tree)
-
-This method takes an L<HTML::Element|HTML::Element> tree and finds organizations in
-it. It is usually given a tree rooted with a name, but it can be given an
-arbitrary tree instead.
-
-=head3 $org->to_hcard
-
-This method, called on an instance of Data::Microformat::hCard::organization, will return
-an hCard HTML representation of the name data present. The returned organization is very 
-lightly formatted; it uses only <div> tags for markup, rather than <span> tags, 
-and is not indented.
-
-=head2 Data
-
-=head3 class_name
+=head2 class_name
 
 The hCard class name for an organization; to wit, "org."
 
-=head3 singular_fields
+=head2 singular_fields
 
 This is a method to list all the fields on an organization that can hold exactly one value.
 
-On organization, they are as follows:
+They are as follows:
 
-=head4 organization_name
+=head3 organization_name
 
 The name of the organization.
 
-=head4 organization_unit
+=head3 organization_unit
 
 The division within the organization.
 
-=head3 plural_fields
+=head2 plural_fields
 
 This is a method to list all the fields on an organization that can hold multiple values.
 

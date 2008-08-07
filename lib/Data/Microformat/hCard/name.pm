@@ -3,10 +3,6 @@ use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
-our $VERSION = "0.01";
-
-use HTML::TreeBuilder;
-
 sub class_name { "n" }
 sub plural_fields { qw() }
 sub singular_fields { qw(honorific_prefix given_name additional_name family_name honorific_suffix) }
@@ -30,58 +26,41 @@ names in hCards.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 Creation/Output Methods
+=head2 class_name
 
-=head3 Data::Microformat::hCard::name->parse($content)
+The hCard class name for a name; to wit, "n."
 
-This method simply takes the content passed in and makes an HTML tree out of
-it, then hands it off to the from_tree method to do the actual interpretation.
-Should you have an L<HTML::Element|HTML::Element> tree already, there is no 
-need to parse the content again; simply pass the tree's root to the from_tree
-method.
+=head2 singular_fields
 
-=head3 Data::Microformat::hCard::name->from_tree($tree)
+This is a method to list all the fields on a name that can hold exactly one value.
 
-This method takes an L<HTML::Element|HTML::Element> tree and finds names in
-it. It is usually given a tree rooted with a name, but it can be given an
-arbitrary tree instead.
+They are as follows:
 
-=head3 $name->to_hcard
+=head3 given_name
 
-This method, called on an instance of Data::Microformat::hCard::name, will return
-an hCard HTML representation of the name data present. The returned name is very 
-lightly formatted; it uses only <div> tags for markup, rather than <span> tags, 
-and is not indented.
+The given, or "first," name.
 
-=head2 Accessor Methods
+=head3 additional_name
 
-=head3 $n->family_name([$family_name])
+The additional, or "middle," name.
 
-This method gets/sets the family name, which is a string.
+=head3 family_name
 
-=head3 $n->given_name([$given_name])
+The family, or "last," name.
 
-This method gets/sets the given name, which is a string.
+=head3 honorific_prefix
 
-=head3 $n->additional_name([$additional_name])
+Any honorific prefix, such as "Dr."
 
-This method gets/sets the additional name (such as a middle name), which is a string.
+=head3 honorific_suffix
 
-=head3 $n->honorific_prefix([$honorific_prefix])
+Any honorific suffix, such as "Ph.D."
 
-This method gets/sets the honorific prefix (such as "Dr."), which is a string.
+=head2 plural_fields
 
-=head3 $n->honorific_suffix([$honorific_suffix])
+This is a method to list all the fields on a name that can hold multiple values.
 
-This method gets/sets the honorific suffix (such as "Ph.D."), which is a string.
-
-=head1 DEPENDENCIES
-
-This module relies upon the following other modules:
-
-L<HTML::TreeBuilder|HTML::TreeBuilder>
-
-Which can be obtained from CPAN.
+There are none for a name.
 
 =head1 AUTHOR
 

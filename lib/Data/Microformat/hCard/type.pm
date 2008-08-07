@@ -3,8 +3,6 @@ use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
-our $VERSION = "0.01";
-
 use HTML::TreeBuilder;
 
 sub class_name { "REPLACE_WITH_KIND" }
@@ -78,44 +76,38 @@ typed things (emails and phone numbers) in hCards.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 Creation/Output Methods
+=head2 Data::Microformat::organization->from_tree($tree)
 
-=head3 Data::Microformat::hCard::type->parse($content)
+This method overrides but provides the same functionality as the
+method of the same name in L<Data::Microformat::hCard::base>.
 
-This method simply takes the content passed in and makes an HTML tree out of
-it, then hands it off to the from_tree method to do the actual interpretation.
-Should you have an L<HTML::Element|HTML::Element> tree already, there is no 
-need to parse the content again; simply pass the tree's root to the from_tree
-method.
+=head2 class_name
 
-=head3 Data::Microformat::hCard::type->from_tree($tree)
+The hCard class name for a type; for types, it is not fully known, and thus this value should be ignored.
 
-This method takes an L<HTML::Element|HTML::Element> tree and finds typed things in
-it. It is usually given a tree rooted with a typed thing, but it can be given an
-arbitrary tree instead.
+=head2 singular_fields
 
-=head3 $card->to_hcard
+This is a method to list all the fields on a typed object that can hold exactly one value.
 
-This method, called on an instance of Data::Microformat::hCard::type, will return
-an hCard HTML representation of the typed data present. The returned name is very 
-lightly formatted; it uses only <div> tags for markup, rather than <span> tags, 
-and is not indented.
+They are as follows:
 
-=head2 Accessor Methods
+=head3 value
 
-=head3 $t->type([$type])
+The value of the object; for instance, in an email object, the email address.
 
-This method gets the type(s), which are strings. It can also add an additional
-type to the object. It returns one type in scalar context, or an array of all
-the types in array context.
+=head3 kind
 
-=head3 $t->value([$value])
+The kind of object this represents; either "email" or "tel."
 
-This method gets/sets the value, which is a string.
+=head2 plural_fields
 
-=head3 $t->kind([$kind])
+This is a method to list all the fields on a typed object that can hold multiple values.
 
-This method gets/sets the kind ("email" or "tel"), which is a string.
+They are as follows:
+
+=head3 type
+
+The type of the object, such as "Home" or "Work."
 
 =head1 DEPENDENCIES
 

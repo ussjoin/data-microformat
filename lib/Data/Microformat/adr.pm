@@ -3,10 +3,6 @@ use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
-our $VERSION = "0.01";
-
-use HTML::TreeBuilder;
-
 sub class_name { "adr" }
 sub plural_fields { qw(type) }
 sub singular_fields { qw(post_office_box street_address extended_address locality region postal_code country_name) }
@@ -76,93 +72,53 @@ exclusively with the relevant class names.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 Creation/Output Methods
-
-=head3 Data::Microformat::adr->parse($content)
-
-This method simply takes the content passed in and makes an HTML tree out of
-it, then hands it off to the from_tree method to do the actual interpretation.
-Should you have an L<HTML::Element|HTML::Element> tree already, there is no 
-need to parse the content again; simply pass the tree's root to the from_tree
-method.
-
-=head3 Data::Microformat::hCard->from_tree($tree)
-
-This method takes an L<HTML::Element|HTML::Element> tree and finds adrs in
-it. It will return one or many adrs (assuming it finds them) depending on
-the call; if called in array context, it will return all that it finds, and if
-called in scalar context, it will return just one.
-
-The module tries hard not to require absolute adherence to the adr spec, but
-there is only so much flexibility it can have. It does not require that all the
-"required" information be present in an adr-- just that what is there be
-reasonably well-formatted, enough to make parsing possible.
-
-=head3 $adr->to_hcard
-
-This method, called on an instance of Data::Microformat::adr, will return
-an hCard HTML representation of the adr data present. This is most likely to be
-used when building your own adrs, but can be called on parsed content as
-well. The returned adr is very lightly formatted; it uses only <div> tags
-for markup, rather than <span> tags, and is not indented.
-
-=head2 Data
-
-=head3 class_name
+=head2 class_name
 
 The hCard class name for an address; to wit, "adr."
 
-=head3 singular_fields
+=head2 singular_fields
 
 This is a method to list all the fields on an address that can hold exactly one value.
 
-On address, they are as follows:
+They are as follows:
 
-=head4 post_office_box
+=head3 post_office_box
 
 The Post Office box, such as "P.O. Box 1234."
 
-=head4 street_address
+=head3 street_address
 
 The street address, such as "1234 Main St."
 
-=head4 extended_address
+=head3 extended_address
 
 The second line of the address, such as "Suite 1."
 
-=head4 locality
+=head3 locality
 
 The city.
 
-=head4 region
+=head3 region
 
 The region/state.
 
-=head4 postal_code
+=head3 postal_code
 
 The postal code.
 
-=head4 country_name
+=head3 country_name
 
 The name of the country, such as "U.S.A."
 
-=head3 plural_fields
+=head2 plural_fields
 
 This is a method to list all the fields on an address that can hold multiple values.
 
-On address, they are as follows:
+They are as follows:
 
-=head4 type
+=head3 type
 
 The type of address, such as "Home" or "Work."
-
-=head1 DEPENDENCIES
-
-This module relies upon the following other modules:
-
-L<HTML::TreeBuilder|HTML::TreeBuilder>
-
-Which can be obtained from CPAN.
 
 =head1 AUTHOR
 

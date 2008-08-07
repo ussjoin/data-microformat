@@ -4,11 +4,11 @@ use strict;
 
 our $VERSION = "0.01";
 
+our $AUTOLOAD;
+
 use HTML::TreeBuilder;
 use HTML::Stream qw(html_escape);
 use Carp;
-
-sub fields { return { latitude => undef, longitude => undef, }; }
 
 sub new
 {
@@ -37,8 +37,6 @@ sub _init
 {
 	my $self = shift;
 }
-
-our $AUTOLOAD;
 
 sub AUTOLOAD 
 {
@@ -127,19 +125,6 @@ sub parse
 		$tree->delete;
 		return $ret;		
 	}
-}
-
-sub _trim
-{
-	my $class = shift;
-	my $content = shift;
-	
-	if ($content)
-	{
-		$content =~ s/^\s//;
-		$content =~ s/\s$//;
-	}
-	return $content;
 }
 
 sub from_tree
@@ -237,6 +222,19 @@ sub to_hcard
 	$ret .= "</div>\n";
 }
 
+sub _trim
+{
+	my $class = shift;
+	my $content = shift;
+	
+	if ($content)
+	{
+		$content =~ s/^\s//;
+		$content =~ s/\s$//;
+	}
+	return $content;
+}
+
 1;
 
 __END__
@@ -258,9 +256,14 @@ as a base class for other Data::Microformat modules.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 Creation/Output Methods
+=head2 Data::Microformat::hCard::base->new
 
-=head3 Data::Microformat::hCard::base->parse($content)
+This method creates a new instance of whatever subclass on which it was called.
+
+This method should not be called directly on Data::Microformat::hCard::base, as
+it will not be particularly useful.
+
+=head2 Data::Microformat::hCard::base->parse($content)
 
 This method simply takes the content passed in and makes an HTML tree out of
 it, then hands it off to the from_tree method to do the actual interpretation.
@@ -268,11 +271,35 @@ Should you have an L<HTML::Element|HTML::Element> tree already, there is no
 need to parse the content again; simply pass the tree's root to the from_tree
 method.
 
+=head2 Data::Microformat::hCard::base->from_tree($tree)
+
+This method takes an L<HTML::Element|HTML::Element> tree and finds microformats in
+it. It will return one or many of the calling class (assuming it finds them) depending on
+the call; if called in array context, it will return all that it finds, and if
+called in scalar context, it will return just one.
+
+The module tries hard not to require absolute adherence to the published specifications, but
+there is only so much flexibility it can have. It does not require that all the
+"required" information be present in a microformat-- just that what is there be
+reasonably well-formatted, enough to make parsing possible.
+
+Certain modules may override this if they have specific parsing concerns.
+
+=head2 $base->to_hcard
+
+This method, called on an instance of Data::Microformat::hCard::base or its subclasses, will return
+an hCard HTML representation of the data present. This is most likely to be
+used when building your own microformatted data, but can be called on parsed content as
+well. The returned data is very lightly formatted; it uses only <div> tags
+for markup, rather than <span> tags, and is not indented.
+
 =head1 DEPENDENCIES
 
 This module relies upon the following other modules:
 
 L<HTML::TreeBuilder|HTML::TreeBuilder>
+
+L<HTML::Stream|HTML::Stream>
 
 Which can be obtained from CPAN.
 

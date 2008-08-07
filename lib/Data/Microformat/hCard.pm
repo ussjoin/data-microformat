@@ -309,275 +309,138 @@ hCard property, it is recommended to consult the vCARD specification, RFC 2426.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 Creation/Output Methods
+=head2 Data::Microformat::organization->from_tree($tree)
 
-=head3 Data::Microformat::hCard->parse($content)
+This method overrides but provides the same functionality as the
+method of the same name in L<Data::Microformat::hCard::base>.
 
-This method simply takes the content passed in and makes an HTML tree out of
-it, then hands it off to the from_tree method to do the actual interpretation.
-Should you have an L<HTML::Element|HTML::Element> tree already, there is no 
-need to parse the content again; simply pass the tree's root to the from_tree
-method.
+=head2 class_name
 
-=head3 Data::Microformat::hCard->from_tree($tree)
+The hCard class name for an hCard; to wit, "vcard."
 
-This method takes an L<HTML::Element|HTML::Element> tree and finds hCards in
-it. It will return one or many hCards (assuming it finds them) depending on
-the call; if called in array context, it will return all that it finds, and if
-called in scalar context, it will return just one.
+=head2 singular_fields
 
-The module tries hard not to require absolute adherence to the hCard spec, but
-there is only so much flexibility it can have. It does implement all the spec
-optimizations (such as the fn and nickname optimizations), for hCards with
-less information than might be standard. It does not require that all the
-"required" information be present in an hCard-- just that what is there be
-reasonably well-formatted, enough to make parsing possible.
+This is a method to list all the fields on an hCard that can hold exactly one value.
 
-=head3 $card->to_hcard
+They are as follows:
 
-This method, called on an instance of Data::Microformat::hCard, will return
-an HTML representation of the hCard data present. This is most likely to be
-used when building your own hCards, but can be called on parsed content as
-well. The returned hCard is very lightly formatted; it uses only <div> tags
-for markup, rather than <span> tags, and is not indented.
+=head3 bday
 
-=head2 Accessor Methods
+The birthday of the hCard.
 
-=head3 $h->adr([$adr])
+=head3 class
 
-This method gets the address(es) of the hCard, which should be L<Data::Microformat::adr|Data::Microformat::adr>
-objects. It can also add an additional address to the hCard.
+The class of the hCard, such as "public" or "private."
 
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
+=head3 fn
 
-hCards can have any number of addresses.
+The familiar name of the hCard.
 
-=head3 $h->agent([$agent])
+=head3 geo
 
-This method gets the agent(s) of the hCard, which can be strings, but are often
-hCards themselves. It can also add an additional agent to the card.
-
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
-
-hCards can have any number of agents.
-
-=head3 $h->bday([$bday])
-
-This method gets/sets the Birthday of the hCard, a string.
-
-hCards can have only one Birthday.
-
-=head3 $h->category([$category])
-
-This method gets the category(ies) of the hCard, which are strings. 
-It can also add an additional category to the card.
-
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
-
-hCards can have any number of categories.
-
-=head3 $h->class([$class])
-
-This method gets/sets the Class of the hCard, a string.
-
-hCards can have only one Class.
-
-=head3 $h->email([$email])
-
-This method gets the email(s) of the hCard, which should be 
-L<Data::Microformat::hCard::type|Data::Microformat::hCard::type>
-objects with kind = "email". It can also add an additional email to the hCard.
-
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
-
-hCards can have any number of emails.
-
-=head3 $h->fn([$fn])
-
-This method gets/sets the Familiar Name of the hCard, a string.
-
-hCards can have only one Familiar Name.
-
-=head3 $h->geo([$geo])
-
-This method gets/sets the Geolocation of the hCard, which should be a L<Data::Microformat::geo|Data::Microformat::geo>
+The geolocation of the hCard, which should be a
+L<Data::Microformat::geo|Data::Microformat::geo>
 object.
 
-hCards can have only one Geolocation.
+=head3 n
 
-=head3 $h->key([$key])
-
-This method gets the key(s) of the hCard, which are strings. 
-It can also add an additional key to the card.
-
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
-
-hCards can have any number of keys.
-
-=head3 $h->label([$key])
-
-This method gets the label(s) of the hCard, which are strings. 
-It can also add an additional label to the card.
-
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
-
-hCards can have any number of label.
-
-=head3 $h->logo([$logo])
-
-This method gets the key(s) of the hCard, which are strings. 
-It can also add an additional logo to the card. Logos are usually URIs,
-according to the spec.
-
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
-
-hCards can have any number of logos.
-
-=head3 $h->mailer([$mailer])
-
-This method gets the mailer(s) of the hCard, which are strings. 
-It can also add an additional mailer to the card.
-
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
-
-hCards can have any number of mailers.
-
-=head3 $h->n([$n])
-
-This method gets/sets the Name of the hCard, which should be a L<Data::Microformat::hCard::name|Data::Microformat::hCard::name>
+The name of the hCard, which should be a L<Data::Microformat::hCard::name>
 object.
 
-hCards can have only one Name.
+=head3 sort_string
 
-=head3 $h->nickname([$nickname])
+The sorting string of the hCard.
 
-This method gets the nickname(s) of the hCard, which are strings. 
-It can also add an additional nickname to the card.
+=head3 uid
 
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
+The globally unique identifier for the hCard.
 
-hCards can have any number of nicknames.
+=head3 tz
 
-=head3 $h->note([$note])
+The time zone for the hCard.
 
-This method gets the note(s) of the hCard, which are strings. 
-It can also add an additional note to the card.
+=head2 plural_fields
 
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
+This is a method to list all the fields on an hCard that can hold multiple values.
 
-hCards can have any number of notes.
+They are as follows:
 
-=head3 $h->org([$org])
+=head3 adr
 
-This method gets the organization(s) of the hCard, which should be 
-L<Data::Microformat::hCard::organization|Data::Microformat::hCard::organization>
-objects. It can also add an additional organization to the hCard.
+The address of the hCard.
 
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
+=head3 agent
 
-hCards can have any number of organizations.
+The agent, which can be either a string or an hCard itself.
 
-=head3 $h->photo([$photo])
+=head3 category
 
-This method gets the photo(s) of the hCard, which are strings. 
-It can also add an additional photo to the card. Photos are usually URIs,
-according to the spec.
+The category of the hCard.
 
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
+=head3 email
 
-hCards can have any number of photos.
-
-=head3 $h->rev([$rev])
-
-This method gets the revision(s) of the hCard, which are strings. 
-It can also add an additional revision to the card.
-
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
-
-hCards can have any number of revisions.
-
-=head3 $h->role([$role])
-
-This method gets the role(s) of the hCard, which are strings. 
-It can also add an additional note to the card.
-
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
-
-hCards can have any number of roles.
-
-=head3 $h->sort_string([$sort_string])
-
-This method gets/sets the Sort String of the hCard, a string.
-
-hCards can have only one Sort String.
-
-=head3 $h->sound([$sound])
-
-This method gets the sound(s) of the hCard, which are strings. 
-It can also add an additional sound to the card. Sounds are usually URIs,
-according to the spec.
-
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
-
-hCards can have any number of sounds.
-
-=head3 $h->tel([$tel])
-
-This method gets the telephone number(s) of the hCard, which should be 
+The cemail attached to the hCard, which should be a
 L<Data::Microformat::hCard::type|Data::Microformat::hCard::type>
-objects with kind = "tel". It can also add an additional telephone number to the hCard.
+object.
 
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
+=head3 key
 
-hCards can have any number of telephone numbers.
+The key (especially, the encryption key) of the hCard.
 
-=head3 $h->title([$title])
+=head3 label
 
-This method gets the title(s) of the hCard, which are strings. 
-It can also add an additional title to the card.
+The label of the hCard.
 
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
+=head3 logo
 
-hCards can have any number of titles.
+The logo of the hCard; usually a URI for the logo.
 
-=head3 $h->tz([$tz])
+=head3 mailer
 
-This method gets/sets the Time Zone of the hCard, a string.
+The mailer for the hCard.
 
-hCards can have only one Time Zone.
+=head3 nickname
 
-=head3 $h->uid([$uid])
+The nickname for the hCard.
 
-This method gets/sets the Globally Unique Identifier of the hCard, a string.
+=head3 note
 
-hCards can have only one UID.
+The note for the hCard.
 
-=head3 $h->url([$url])
+=head3 org
 
-This method gets the url(s) of the hCard, which are strings. 
-It can also add an additional url to the card.
+The organization for the hCard, which should be a L<Data::Microformat::hCard::organization>
+object.
 
-When no parameter is given, this method returns one item if called in scalar
-context, and an array of items if called in array context.
+=head3 photo
 
-hCards can have any number of urls.
+The photo of the hCard; usually a URI for the photo.
+
+=head3 rev
+
+The revision of the hCard.
+
+=head3 role
+
+The role of the hCard.
+
+=head3 sound
+
+The sound of the hCard; usually a URI for the sound.
+
+=head3 tel
+
+The telephone number of the hCard, which should be a
+L<Data::Microformat::hCard::type|Data::Microformat::hCard::type>
+object.
+
+=head3 title
+
+The title of the hCard.
+
+=head3 url
+
+The URL for the hCard.
 
 =head1 DEPENDENCIES
 
