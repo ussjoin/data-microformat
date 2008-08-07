@@ -2,6 +2,7 @@ package Data::Microformat::geo;
 use base qw(Data::Microformat::hCard::base);
 
 use strict;
+use warnings;
 
 sub class_name { "geo" }
 sub plural_fields { }

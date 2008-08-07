@@ -2,6 +2,7 @@ package Data::Microformat::hCard;
 use base qw(Data::Microformat::hCard::base);
 
 use strict;
+use warnings;
 
 our $VERSION = "0.01";
 
@@ -273,6 +274,8 @@ This documentation refers to Data::Microformat::hCard version 0.01.
 
 =head1 DESCRIPTION
 
+=head2 Overview
+
 This module exists both to parse existing hCards from web pages, and to create
 new hCards so that they can be put onto the Internet.
 
@@ -305,6 +308,33 @@ exclusively with the relevant class names.
 
 For information on precisely what types of strings are intended for each
 hCard property, it is recommended to consult the vCARD specification, RFC 2426.
+
+=head2 The Helper Methods
+
+Each module in Data::Microformat provides two methods, singular_fields and
+plural_fields. These methods list the fields on that object that can have
+exactly one value, or multiple values, respectively. Their documentation also
+tries to provide some hint as to what the field might be used for.
+
+To set a value in a field, simply write
+
+	$object->field_name($value);
+
+For instance,
+
+	$my_hcard->nickname("Happy");
+
+To get a value, for either singular or plural fields, you may write
+
+	my $value = $object->field_name;
+
+For plural fields, to get all the values, just make the call in array context;
+for instance,
+
+	my @values = $my_hcard->nickname;
+	
+A plural value with multiple values set will return just the first one when
+called in scalar context.
 
 =head1 SUBROUTINES/METHODS
 

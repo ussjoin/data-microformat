@@ -2,6 +2,7 @@ package Data::Microformat::adr;
 use base qw(Data::Microformat::hCard::base);
 
 use strict;
+use warnings;
 
 sub class_name { "adr" }
 sub plural_fields { qw(type) }

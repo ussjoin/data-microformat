@@ -1,5 +1,69 @@
 Data-Microformat
 
+SYNOPSIS
+
+Overview
+
+This module exists both to parse existing hCards from web pages, and to create
+new hCards so that they can be put onto the Internet.
+
+To use it to parse an existing hCard (or hCards), simply give it the content
+of the page containing them (there is no need to first eliminate extraneous
+content, as the module will handle that itself):
+
+	my $card = Data::Microformat::hCard->parse($content);
+
+If you would like to get all the hCards on the webpage, simply ask using an
+array:
+
+	my @cards = Data::Microformat::hCard->parse($content);
+	
+The module respects nested hCards using the parsing rules defined in the spec,
+so if one hCard contains another, it will return one hCard with the other held
+in the relevant subpart, rather than two top-level hCards.
+
+To create a new hCard, first create the new object:
+	
+	my $card = Data::Microformat::hCard->new;
+	
+Then use the helper methods to add any data you would like. When you're ready
+to output the hCard, simply write
+
+	my $output = $card->to_hcard;
+
+And $output will be filled with an hCard representation, using <div> tags
+exclusively with the relevant class names.
+
+For information on precisely what types of strings are intended for each
+hCard property, it is recommended to consult the vCARD specification, RFC 2426.
+
+The Helper Methods
+
+Each module in Data::Microformat provides two methods, singular_fields and
+plural_fields. These methods list the fields on that object that can have
+exactly one value, or multiple values, respectively. Their documentation also
+tries to provide some hint as to what the field might be used for.
+
+To set a value in a field, simply write
+
+	$object->field_name($value);
+
+For instance,
+
+	$my_hcard->nickname("Happy");
+
+To get a value, for either singular or plural fields, you may write
+
+	my $value = $object->field_name;
+
+For plural fields, to get all the values, just make the call in array context;
+for instance,
+
+	my @values = $my_hcard->nickname;
+	
+A plural value with multiple values set will return just the first one when
+called in scalar context.
+
 INSTALLATION
 
 To install this module, run the following commands:
@@ -31,7 +95,7 @@ You can also look for information at:
         http://search.cpan.org/dist/Data-Microformat
 
 
-COPYRIGHT AND LICENCE
+COPYRIGHT AND LICENSE
 
 Copyright (C) 2008 Brendan O'Connor
 

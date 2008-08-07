@@ -2,6 +2,7 @@ package Data::Microformat::hCard::name;
 use base qw(Data::Microformat::hCard::base);
 
 use strict;
+use warnings;
 
 sub class_name { "n" }
 sub plural_fields { qw() }

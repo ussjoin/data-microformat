@@ -2,6 +2,7 @@ package Data::Microformat::hCard::type;
 use base qw(Data::Microformat::hCard::base);
 
 use strict;
+use warnings;
 
 sub class_name { "REPLACE_WITH_KIND" }
 sub plural_fields { qw(type) }

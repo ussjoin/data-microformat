@@ -2,6 +2,7 @@ package Data::Microformat::hCard::organization;
 use base qw(Data::Microformat::hCard::base);
 
 use strict;
+use warnings;
 
 sub class_name { "org" }
 sub plural_fields { qw() }
