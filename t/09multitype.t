@@ -39,21 +39,21 @@ is($arr[1], "Headquarters");
 
 my $comparison_of_type = << 'EOF';
 <div class="tel">
+<div class="value">415-344-0829</div>
 <div class="type">Fax</div>
 <div class="type">Preferred</div>
-<div class="value">415-344-0829</div>
 </div>
 EOF
 
 my $comparison_of_adr = << 'EOF';
 <div class="adr">
-<div class="type">San Francisco</div>
-<div class="type">Headquarters</div>
 <div class="street-address">548 4th St.</div>
 <div class="locality">San Francisco</div>
 <div class="region">CA</div>
 <div class="postal-code">94107</div>
 <div class="country-name">USA</div>
+<div class="type">San Francisco</div>
+<div class="type">Headquarters</div>
 </div>
 EOF
 

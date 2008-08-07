@@ -21,8 +21,8 @@ is($type->value, "+1.415.555.1212");
 
 my $comparison = << 'EOF';
 <div class="tel">
-<div class="type">Home</div>
 <div class="value">+1.415.555.1212</div>
+<div class="type">Home</div>
 </div>
 EOF
 is ($type->to_hcard, $comparison);
@@ -39,8 +39,8 @@ is($type->value, 'test@example.com');
 
 $comparison = << 'EOF';
 <div class="email">
-<div class="type">Work</div>
 <div class="value">test@example.com</div>
+<div class="type">Work</div>
 </div>
 EOF
 

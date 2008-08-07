@@ -54,15 +54,6 @@ sub from_tree
 	return $object;
 }
 
-sub to_hcard
-{
-	my $self = shift;
-	my $ret = "<div class=\"org\">\n";
-	if ($self->organization_name) {$ret .= "<div class=\"organization-name\">".$self->organization_name."</div>\n";}
-	if ($self->organization_unit) {$ret .= "<div class=\"organization-unit\">".$self->organization_unit."</div>\n";}
-	$ret .= "</div>\n";
-}
-
 1;
 
 __END__

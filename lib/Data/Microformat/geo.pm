@@ -57,14 +57,6 @@ sub from_tree
 
 }
 
-sub to_hcard
-{
-	my $self = shift;
-	my $ret = "<div class=\"geo\">\n";
-	if ($self->latitude) {$ret .= "<div class=\"latitude\">".$self->latitude."</div>\n";}
-	if ($self->longitude) {$ret .= "<div class=\"longitude\">".$self->longitude."</div>\n";}
-	$ret .= "</div>\n";
-}
 
 1;
 

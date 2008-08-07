@@ -9,7 +9,7 @@ use HTML::TreeBuilder;
 
 sub class_name { "adr" }
 sub plural_fields { qw(type) }
-sub singular_fields { qw(post_office_box extended_address street_address locality region postal_code country_name) }
+sub singular_fields { qw(post_office_box street_address extended_address locality region postal_code country_name) }
 
 sub from_tree
 {
@@ -59,24 +59,6 @@ sub from_tree
 	}
 }
 
-
-sub to_hcard
-{
-	my $self = shift;
-	my $ret = "<div class=\"adr\">\n";
-	foreach my $t ($self->type)
-	{
-		$ret .= "<div class=\"type\">".$t."</div>\n";
-	}
-	if ($self->post_office_box) {$ret .= "<div class=\"post-office-box\">".$self->post_office_box."</div>\n";}
-	if ($self->street_address) {$ret .= "<div class=\"street-address\">".$self->street_address."</div>\n";}
-	if ($self->extended_address) {$ret .= "<div class=\"extended-address\">".$self->extended_address."</div>\n";}
-	if ($self->locality) {$ret .= "<div class=\"locality\">".$self->locality."</div>\n";}
-	if ($self->region) {$ret .= "<div class=\"region\">".$self->region."</div>\n";}
-	if ($self->postal_code) {$ret .= "<div class=\"postal-code\">".$self->postal_code."</div>\n";}
-	if ($self->country_name) {$ret .= "<div class=\"country-name\">".$self->country_name."</div>\n";}
-	$ret .= "</div>\n";
-}
 
 1;
 

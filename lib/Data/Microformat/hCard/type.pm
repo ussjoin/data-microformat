@@ -59,18 +59,6 @@ sub from_tree
 	return $object;
 }
 
-sub to_hcard
-{
-	my $self = shift;
-	my $ret = "<div class=\"".$self->kind."\">\n";
-	foreach my $t ($self->type)
-	{
-		$ret .= "<div class=\"type\">".$t."</div>\n";
-	}
-	if ($self->value) {$ret .= "<div class=\"value\">".$self->value."</div>\n";}
-	$ret .= "</div>\n";
-}
-
 1;
 
 __END__

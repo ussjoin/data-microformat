@@ -5,6 +5,7 @@ use strict;
 our $VERSION = "0.01";
 
 use HTML::TreeBuilder;
+use HTML::Stream qw(html_escape);
 use Carp;
 
 sub fields { return { latitude => undef, longitude => undef, }; }
@@ -25,7 +26,9 @@ sub new
 		$fields->{$field} = undef;
 	}
 	
-	my $self  = bless { _singulars => $singulars, %$fields, config => {%opts} }, $class;
+	my $class_name = $class->class_name;
+	
+	my $self  = bless { _class_name => $class_name, _singulars => $singulars, %$fields, config => {%opts} }, $class;
 	$self->_init();
 	return $self;
 }
@@ -45,7 +48,7 @@ sub AUTOLOAD
 	my $name = $AUTOLOAD;
 	$name =~ s/.*://;
 
-	my $class_name = $self->class_name;
+	my $class_name = $self->{_class_name};
 	
 	if (exists $self->{$name})
 	{
@@ -146,7 +149,49 @@ sub from_tree
 
 sub to_hcard
 {
-	die("Subclass has not implemented to_hcard\n");
+	my $self  = shift;
+	my $thing = shift;
+	my $class_name = $self->{_class_name};
+	
+	if (defined $self->{kind})
+	{
+		$class_name = $self->{kind};
+	}
+	my $ret   = "<div class=\"$class_name\">\n";
+	for my $field ($self->singular_fields)
+	{
+		next unless defined $self->{$field};
+		next if ($field eq "kind");
+		if (ref($self->{$field}) =~ m/Data::Microformat/)
+		{
+			$ret.= $self->{$field}->to_hcard;
+		}
+		else
+		{
+			my $name = $field;
+			$name =~ tr/_/-/;
+			$ret .= "<div class=\"$name\">".html_escape($self->{$field})."</div>\n";
+		}
+	}
+	for my $field ($self->plural_fields)
+	{
+		next unless defined $self->{$field};
+		my $name = $field;
+		$name =~ tr/_/-/;
+		my $fields = $self->{$field};
+		foreach my $value (@$fields)
+		{
+			if (ref($value) =~ m/Data::Microformat/)
+			{
+				$ret.= $value->to_hcard;
+			}
+			else
+			{
+				$ret .= "<div class=\"$name\">".html_escape($value)."</div>\n";
+			}
+		}
+	}
+	$ret .= "</div>\n";
 }
 
 1;

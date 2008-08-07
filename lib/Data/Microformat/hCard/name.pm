@@ -9,7 +9,7 @@ use HTML::TreeBuilder;
 
 sub class_name { "n" }
 sub plural_fields { qw() }
-sub singular_fields { qw(family_name given_name additional_name honorific_prefix honorific_suffix) }
+sub singular_fields { qw(honorific_prefix given_name additional_name family_name honorific_suffix) }
 
 sub from_tree
 {
@@ -44,18 +44,6 @@ sub from_tree
 		}
 	}
 	return $object;
-}
-
-sub to_hcard
-{
-	my $self = shift;
-	my $ret = "<div class=\"n\">\n";
-	if ($self->honorific_prefix) {$ret .= "<div class=\"honorific-prefix\">".$self->honorific_prefix."</div>\n";}
-	if ($self->given_name) {$ret .= "<div class=\"given-name\">".$self->given_name."</div>\n";}
-	if ($self->additional_name) {$ret .= "<div class=\"additional-name\">".$self->additional_name."</div>\n";}
-	if ($self->family_name) {$ret .= "<div class=\"family-name\">".$self->family_name."</div>\n";}
-	if ($self->honorific_suffix) {$ret .= "<div class=\"honorific-suffix\">".$self->honorific_suffix."</div>\n";}
-	$ret .= "</div>\n";
 }
 
 1;

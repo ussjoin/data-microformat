@@ -12,7 +12,7 @@ use Data::Microformat::hCard::type;
 use Data::Microformat::hCard::name;
 use Data::Microformat::hCard::organization;
 
-sub class_name { "hCard" }
+sub class_name { "vcard" }
 sub singular_fields { qw(fn n bday tz geo sort_string uid class) }
 sub plural_fields { qw(adr agent category email key label logo mailer nickname note org photo rev role sound tel title url) }
 
@@ -235,40 +235,6 @@ sub from_tree
 	{
 		return $all_cards[0];
 	}
-}
-
-sub to_hcard
-{
-	my $self = shift;
-	my $ret = "<div class=\"vcard\">\n";
-	if ($self->fn) {$ret .= "<div class=\"fn\">".$self->fn."</div>\n"};
-	if ($self->n) {$ret .= $self->n->to_hcard};
-	if ($self->bday) {$ret .= "<div class=\"bday\">".$self->bday."</div>\n"};
-	if ($self->tz) {$ret .= "<div class=\"tz\">".$self->tz."</div>\n"};
-	if ($self->geo) {$ret .= $self->geo->to_hcard};
-	if ($self->sort_string) {$ret .= "<div class=\"sort-string\">".$self->sort_string."</div>\n"};
-	if ($self->uid) {$ret .= "<div class=\"uid\">".$self->uid."</div>\n"};
-	if ($self->class) {$ret .= "<div class=\"class\">".$self->class."</div>\n"};
-	
-	foreach my $t ($self->adr) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"adr\">".$t."</div>\n"}};
-	foreach my $t ($self->agent) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard} else {$ret .= "<div class=\"agent\">".$t."</div>\n"}};
-	foreach my $t ($self->category) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"category\">".$t."</div>\n"}};
-	foreach my $t ($self->email) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"email\">".$t."</div>\n"}};
-	foreach my $t ($self->key) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"key\">".$t."</div>\n"}};
-	foreach my $t ($self->label) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"label\">".$t."</div>\n"}};
-	foreach my $t ($self->logo) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"logo\">".$t."</div>\n"}};
-	foreach my $t ($self->mailer) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"mailer\">".$t."</div>\n"}};
-	foreach my $t ($self->nickname) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"nickname\">".$t."</div>\n"}};
-	foreach my $t ($self->note) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"note\">".$t."</div>\n"}};
-	foreach my $t ($self->org) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"org\">".$t."</div>\n"}};
-	foreach my $t ($self->photo) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"photo\">".$t."</div>\n"}};
-	foreach my $t ($self->rev) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"rev\">".$t."</div>\n"}};
-	foreach my $t ($self->role) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"role\">".$t."</div>\n"}};
-	foreach my $t ($self->sound) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"sound\">".$t."</div>\n"}};
-	foreach my $t ($self->tel) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"tel\">".$t."</div>\n"}};
-	foreach my $t ($self->title) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"title\">".$t."</div>\n"}};
-	foreach my $t ($self->url) {if (ref($t) =~ /Data::Microformat/) {$ret .=$t->to_hcard;} else {$ret .= "<div class=\"url\">".$t."</div>\n"}};
-	$ret .="</div>\n";
 }
 
 1;
