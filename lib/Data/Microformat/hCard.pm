@@ -5,7 +5,6 @@ use strict;
 
 our $VERSION = "0.01";
 
-use HTML::TreeBuilder;
 use Data::Microformat::adr;
 use Data::Microformat::geo;
 use Data::Microformat::hCard::type;
@@ -451,12 +450,6 @@ L<Data::Microformat::adr|Data::Microformat::adr>
 L<Data::Microformat::geo|Data::Microformat::geo>
 
 They are distributed in the same distribution as this module.
-
-It also relies upon:
-
-L<HTML::TreeBuilder|HTML::TreeBuilder>
-
-Which can be obtained from CPAN.
 
 =head1 AUTHOR
 

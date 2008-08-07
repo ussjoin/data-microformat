@@ -3,8 +3,6 @@ use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
-use HTML::TreeBuilder;
-
 sub class_name { "REPLACE_WITH_KIND" }
 sub plural_fields { qw(type) }
 sub singular_fields { qw(value kind) }
@@ -108,14 +106,6 @@ They are as follows:
 =head3 type
 
 The type of the object, such as "Home" or "Work."
-
-=head1 DEPENDENCIES
-
-This module relies upon the following other modules:
-
-L<HTML::TreeBuilder|HTML::TreeBuilder>
-
-Which can be obtained from CPAN.
 
 =head1 AUTHOR
 

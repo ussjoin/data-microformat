@@ -3,8 +3,6 @@ use base qw(Data::Microformat::hCard::base);
 
 use strict;
 
-use HTML::TreeBuilder;
-
 sub class_name { "org" }
 sub plural_fields { qw() }
 sub singular_fields { qw(organization_name organization_unit) }
@@ -99,14 +97,6 @@ The division within the organization.
 This is a method to list all the fields on an organization that can hold multiple values.
 
 There are none for organizations.
-
-=head1 DEPENDENCIES
-
-This module relies upon the following other modules:
-
-L<HTML::TreeBuilder|HTML::TreeBuilder>
-
-Which can be obtained from CPAN.
 
 =head1 AUTHOR
 
