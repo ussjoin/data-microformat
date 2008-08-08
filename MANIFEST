@@ -22,5 +22,6 @@ t/09multitype.t
 t/10containing.t
 t/11dropsingular.t
 t/12semantics.t
+t/13representative.t
 t/pod-coverage.t
 t/pod.t

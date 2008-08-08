@@ -111,18 +111,19 @@ sub parse
 {
 	my $class = shift;
 	my $content = shift;
+	my $representative_url = shift;
 	my $tree = HTML::TreeBuilder->new_from_content($content);
 	$tree->elementify;
 	
 	if (wantarray)
 	{
-		my @ret = $class->from_tree($tree);
+		my @ret = $class->from_tree($tree, $representative_url);
 		$tree->delete;
 		return @ret;
 	}
 	else
 	{
-		my $ret = $class->from_tree($tree);
+		my $ret = $class->from_tree($tree, $representative_url);
 		$tree->delete;
 		return $ret;		
 	}
@@ -264,13 +265,17 @@ This method creates a new instance of whatever subclass on which it was called.
 This method should not be called directly on Data::Microformat::hCard::base, as
 it will not be particularly useful.
 
-=head2 Data::Microformat::hCard::base->parse($content)
+=head2 Data::Microformat::hCard::base->parse($content [, $url])
 
 This method simply takes the content passed in and makes an HTML tree out of
 it, then hands it off to the from_tree method to do the actual interpretation.
 Should you have an L<HTML::Element|HTML::Element> tree already, there is no 
 need to parse the content again; simply pass the tree's root to the from_tree
 method.
+
+If you are calling this method on the hCard class, you can pass an additional
+parameter of the source URL, and this will allow the representative hCard to be
+determined. This parameter is optional.
 
 =head2 Data::Microformat::hCard::base->from_tree($tree)
 

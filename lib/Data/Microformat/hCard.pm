@@ -16,36 +16,58 @@ sub class_name { "vcard" }
 sub singular_fields { qw(fn n bday tz geo sort_string uid class) }
 sub plural_fields { qw(adr agent category email key label logo mailer nickname note org photo rev role sound tel title url) }
 
+sub is_representative
+{
+	my $self = shift;
+	if ($self->{_representative})
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 sub from_tree
 {
 	my $class = shift;
 	my $tree = shift;
+	my $representative_url = shift;
+	if ($representative_url)
+	{
+		$representative_url = _normalize_url($representative_url);
+	}
+	
+
+	my $rel_me = "";
 	
 	my @all_cards;
 	my @cards = $tree->look_down("class", qr/vcard/);
 	
 	#First: build the list of things we recognize;
 	my $recognized_regex = "(";
-	foreach (     ( Data::Microformat::adr->singular_fields,
-					Data::Microformat::adr->plural_fields,
-					Data::Microformat::adr->class_name,
-					Data::Microformat::geo->singular_fields,
-					Data::Microformat::geo->plural_fields,
-					Data::Microformat::geo->class_name,
-					Data::Microformat::hCard::name->singular_fields,
-					Data::Microformat::hCard::name->plural_fields,
-					Data::Microformat::hCard::name->class_name,
-					Data::Microformat::hCard::organization->singular_fields,
-					Data::Microformat::hCard::organization->plural_fields,
-					Data::Microformat::hCard::organization->class_name,
-					Data::Microformat::hCard::type->singular_fields,
-					Data::Microformat::hCard::type->plural_fields,
-					Data::Microformat::hCard::type->class_name,
-					Data::Microformat::hCard->singular_fields,
-					Data::Microformat::hCard->plural_fields,
-					Data::Microformat::hCard->class_name, ))
+	foreach my $field (	(   Data::Microformat::adr->singular_fields,
+							Data::Microformat::adr->plural_fields,
+							Data::Microformat::adr->class_name,
+							Data::Microformat::geo->singular_fields,
+							Data::Microformat::geo->plural_fields,
+							Data::Microformat::geo->class_name,
+							Data::Microformat::hCard::name->singular_fields,
+							Data::Microformat::hCard::name->plural_fields,
+							Data::Microformat::hCard::name->class_name,
+							Data::Microformat::hCard::organization->singular_fields,
+							Data::Microformat::hCard::organization->plural_fields,
+							Data::Microformat::hCard::organization->class_name,
+							Data::Microformat::hCard::type->singular_fields,
+							Data::Microformat::hCard::type->plural_fields,
+							Data::Microformat::hCard::type->class_name,
+							Data::Microformat::hCard->singular_fields,
+							Data::Microformat::hCard->plural_fields,
+							Data::Microformat::hCard->class_name, ))
 	{
-		$recognized_regex .= '(^|\s)'.$_.'($|\s)|';
+		$field =~ s/\_/\-/;
+		$recognized_regex .= '(^|\s)'.$field.'($|\s)|';
 	}
 	chop($recognized_regex);
 	$recognized_regex .= ")";
@@ -67,14 +89,15 @@ sub from_tree
 			$element->delete;
 		}
 		
-		@useless = $card_tree->look_down(sub
+		@useless = $card_tree->look_down(sub{
+			if ($_[0]->attr('class'))
 			{
-				if ($_[0]->attr('class') =~ m/$recognized_regex/)
-				{
-					return 0;
-				}
+				return $_[0]->attr('class') !~ m/$recognized_regex/;
+			}
+			else
+			{
 				return 1;
-			});
+			}});
 		
 		foreach my $element (@useless)
 		{
@@ -126,11 +149,7 @@ sub from_tree
 					my $data;
 					my @cons = $bit->content_list;
 					
-					if (scalar @cons > 1)
-					{
-						#print STDERR "DATA: Possible failure for bit $bit from type $type.\n";
-					}
-					else
+					unless (scalar @cons > 1)
 					{
 						$data = $class->_trim($cons[0]);
 						if ($bit->tag eq "abbr" && $bit->attr('title'))
@@ -142,6 +161,10 @@ sub from_tree
 							if ($type =~ m/(photo|logo|agent|sound|url)/)
 							{
 								$data = $class->_trim($bit->attr('href'));
+								if ($bit->attr('rel') && $bit->attr('rel') eq "me")
+								{
+									$rel_me = $data;
+								}
 							}
 						}
 						elsif ($bit->tag eq "object" && $bit->attr('data'))
@@ -201,10 +224,6 @@ sub from_tree
 					{
 						my $org = Data::Microformat::hCard::organization->from_tree($bit);
 						$card->org($org);
-					}
-					elsif ($type eq "url" && $bit->attr('href'))
-					{
-							$card->url($class->_trim($bit->attr('href')));
 					}
 					else
 					{
@@ -274,6 +293,39 @@ sub from_tree
 	
 	$tree->delete;
 	
+	# Check: Representative hCard?
+	if ($representative_url)
+	{
+		if (scalar @all_cards == 1)
+		{
+			$all_cards[0]->{_representative} = 1;
+		}
+		else
+		{
+			my $found_one = 0;
+			foreach my $card (@all_cards)
+			{
+				if ($card->url && $card->uid && $card->url eq $card->uid && _normalize_url($card->url) eq _normalize_url($representative_url))
+				{
+					$card->{_representative} = 1;
+					$found_one = 1;
+					last;
+				}
+			}
+			if (!$found_one)
+			{
+				foreach my $card (@all_cards)
+				{
+					if ($card->url && $card->url eq $rel_me)
+					{
+						$card->{_representative} = 1;
+						last;
+					}
+				}
+			}
+		}
+	}
+	
 	if (wantarray)
 	{
 		return @all_cards;
@@ -282,6 +334,14 @@ sub from_tree
 	{
 		return $all_cards[0];
 	}
+}
+
+sub _normalize_url
+{
+	my $url = shift;
+	$url =~ s/[A-Z]/[a-z]/;
+	$url =~ s/\/$//;
+	return $url;
 }
 
 1;
@@ -353,6 +413,11 @@ to output the hCard, simply write
 And $output will be filled with an hCard representation, using <div> tags
 exclusively with the relevant class names.
 
+If you would like to have the parser determine the representative hCard for a
+page, simply pass the page's URL as an additional parameter to the C<parse> or
+C<from_tree> methods, and the appropriate property will be found if it can
+be determined.
+
 For information on precisely what types of strings are intended for each
 hCard property, it is recommended to consult the vCARD specification, RFC 2426.
 
@@ -385,10 +450,21 @@ called in scalar context.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 Data::Microformat::organization->from_tree($tree)
+=head2 Data::Microformat::organization->from_tree($tree [, $source_url])
 
 This method overrides but provides the same functionality as the
-method of the same name in L<Data::Microformat::hCard::base>.
+method of the same name in L<Data::Microformat::hCard::base>, with the optional
+addition of $source_url. If present, this latter term will trigger a search to
+find the "representative hCard" for the given page, using the specifications
+for representative hCard parsing; a card's status of representative or not can
+be found by calling the C<is_representative> method on it.
+
+=head2 $card->is_representative
+
+This method returns 1 if the card is known to be a "representative hCard," and
+0 otherwise. Note that for the representative hCard to have been determined,
+the URL for the source webpage must have been passed to the C<parse> or
+C<from_tree> method that created the hCard.
 
 =head2 class_name
 
