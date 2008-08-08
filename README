@@ -34,6 +34,11 @@ to output the hCard, simply write
 And $output will be filled with an hCard representation, using <div> tags
 exclusively with the relevant class names.
 
+If you would like to have the parser determine the representative hCard for a
+page, simply pass the page's URL as an additional parameter to the parse or
+from_tree methods, and the appropriate property will be found if it can
+be determined.
+
 For information on precisely what types of strings are intended for each
 hCard property, it is recommended to consult the vCARD specification, RFC 2426.
 
