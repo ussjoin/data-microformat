@@ -23,12 +23,59 @@ sub from_tree
 	
 	my @all_cards;
 	my @cards = $tree->look_down("class", qr/vcard/);
+	
+	#First: build the list of things we recognize;
+	my $recognized_regex = "(";
+	foreach (     ( Data::Microformat::adr->singular_fields,
+					Data::Microformat::adr->plural_fields,
+					Data::Microformat::adr->class_name,
+					Data::Microformat::geo->singular_fields,
+					Data::Microformat::geo->plural_fields,
+					Data::Microformat::geo->class_name,
+					Data::Microformat::hCard::name->singular_fields,
+					Data::Microformat::hCard::name->plural_fields,
+					Data::Microformat::hCard::name->class_name,
+					Data::Microformat::hCard::organization->singular_fields,
+					Data::Microformat::hCard::organization->plural_fields,
+					Data::Microformat::hCard::organization->class_name,
+					Data::Microformat::hCard::type->singular_fields,
+					Data::Microformat::hCard::type->plural_fields,
+					Data::Microformat::hCard::type->class_name,
+					Data::Microformat::hCard->singular_fields,
+					Data::Microformat::hCard->plural_fields,
+					Data::Microformat::hCard->class_name, ))
+	{
+		$recognized_regex .= '(^|\s)'.$_.'($|\s)|';
+	}
+	chop($recognized_regex);
+	$recognized_regex .= ")";
+	
 
 	foreach my $card_tree (@cards)
 	{
 		# Walk the tree looking for useless bits
 		# Where class is undefined
 		my @useless = $card_tree->look_down("class", undef);
+		foreach my $element (@useless)
+		{
+			my @kids = $element->detach_content;
+			my $parent = $element->detach;
+			if (@kids)
+			{
+				$parent->push_content(@kids);
+			}
+			$element->delete;
+		}
+		
+		@useless = $card_tree->look_down(sub
+			{
+				if ($_[0]->attr('class') =~ m/$recognized_regex/)
+				{
+					return 0;
+				}
+				return 1;
+			});
+		
 		foreach my $element (@useless)
 		{
 			my @kids = $element->detach_content;
