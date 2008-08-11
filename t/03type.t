@@ -3,7 +3,7 @@
 use strict;
 use Data::Microformat::hCard::type;
 
-use Test::More tests => 10;
+use Test::More tests => 13;
 
 #Basic type taken from the microformats wiki: http://microformats.org/wiki/hcard
 my $simple = << 'EOF';
@@ -41,6 +41,22 @@ $comparison = << 'EOF';
 <div class="email">
 <div class="value">test@example.com</div>
 <div class="type">Work</div>
+</div>
+EOF
+
+is($type->to_hcard, $comparison);
+
+my $hard = << 'EOF';
+<a class="email" href="mailto:test@example.com">Email</a>
+EOF
+
+ok($type = Data::Microformat::hCard::type->parse($hard));
+
+is ($type->value, 'test@example.com');
+
+$comparison = << 'EOF';
+<div class="email">
+<div class="value">test@example.com</div>
 </div>
 EOF
 

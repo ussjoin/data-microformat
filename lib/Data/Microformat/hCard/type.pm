@@ -20,7 +20,6 @@ sub from_tree
 	my $object = Data::Microformat::hCard::type->new;
 	$object->kind($tree->attr('class'));
 	my @bits = $tree->content_list;
-	
 	foreach my $bit (@bits)
 	{
 		if (ref($bit) eq "HTML::Element")
@@ -41,8 +40,23 @@ sub from_tree
 					$data = $class->_trim($bit->attr('href'));
 					$data =~ s/^(mailto|tel)\://;
 				}
-				$object->$type($data);
+				
+				if ($type eq $object->kind)
+				{
+					$object->value($data);
+				}
+				else
+				{
+					$object->$type($data);
+				}
 			}
+		}
+		elsif ($tree->attr('class') =~ m/(email|tel)/ && $tree->tag =~ m/(a|area)/ && $tree->attr('href'))
+		{
+			# This check deals with non-nested mailto links-- such as are created by the official hCard creator.
+			my $data = $class->_trim($tree->attr('href'));
+			$data =~ s/^(mailto|tel)\://;
+			$object->value($data);
 		}
 		else
 		{
