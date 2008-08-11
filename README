@@ -4,6 +4,18 @@ SYNOPSIS
 
 Overview
 
+This module handles three existing specifications from Microformats.org:
+
+* hCard - http://microformats.org/wiki/hcard
+* adr   - http://microformats.org/wiki/adr
+* geo   - http://microformats.org/wiki/geo
+
+Each of them can be used on their own (hCard uses adr and geo to parse
+addresses and geolocations, but adr and geo have no dependencies on any others,
+and hCard doesn't need either unless the corresponding elements appear in an
+hCard), though the primary appearance of adr and geo "in the wild" is as
+subparts of hCards.
+
 This module exists both to parse existing hCards from web pages, and to create
 new hCards so that they can be put onto the Internet.
 
@@ -100,10 +112,13 @@ You can also look for information at:
         http://search.cpan.org/dist/Data-Microformat
 
 
+AUTHOR
+
+Brendan O'Connor <perl -at- ussjoin -dot- com>
+
 COPYRIGHT AND LICENSE
 
-Copyright (C) 2008 Brendan O'Connor
+Copyright (C) 2008 Six Apart Ltd. All rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-

@@ -309,10 +309,6 @@ L<HTML::Stream|HTML::Stream>
 
 Which can be obtained from CPAN.
 
-=head1 AUTHOR
-
-Brendan O'Connor, C<< <perl at ussjoin.com> >>
-
 =head1 BUGS
 
 Please report any bugs or feature requests to 
@@ -321,7 +317,13 @@ L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Data-Microformat>.  I will be
 notified,and then you'll automatically be notified of progress on your bug as I
 make changes.
 
+=head1 AUTHOR
+
+Brendan O'Connor, C<< <perl at ussjoin.com> >>
+
 =head1 COPYRIGHT
+
+Copyright 2008, Six Apart Ltd. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
