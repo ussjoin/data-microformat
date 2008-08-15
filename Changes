@@ -1,5 +1,8 @@
 Revision history for Data-Microformat
 
-0.01    Date/time
+0.02	Date?
+		Added support for "psychotic" encodings, a la http://hcard.geekhood.net/encode/ .
+
+0.01    August 11, 2008
         First version, released on an unsuspecting world.
 

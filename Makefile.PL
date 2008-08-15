@@ -10,6 +10,7 @@ WriteMakefile(
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More' => 0,
+		'HTML::Entities' => 0,
         'HTML::Stream' => 0,
         'HTML::TreeBuilder' => 0,
     },

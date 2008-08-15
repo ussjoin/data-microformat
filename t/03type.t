@@ -3,7 +3,7 @@
 use strict;
 use Data::Microformat::hCard::type;
 
-use Test::More tests => 13;
+use Test::More tests => 15;
 
 #Basic type taken from the microformats wiki: http://microformats.org/wiki/hcard
 my $simple = << 'EOF';
@@ -17,11 +17,11 @@ ok(my $type = Data::Microformat::hCard::type->parse($simple));
 
 is($type->kind, "tel");
 is($type->type, "Home");
-is($type->value, "+1.415.555.1212");
+is($type->value, "1.415.555.1212");
 
 my $comparison = << 'EOF';
 <div class="tel">
-<div class="value">+1.415.555.1212</div>
+<div class="value">1.415.555.1212</div>
 <div class="type">Home</div>
 </div>
 EOF
@@ -61,3 +61,22 @@ $comparison = << 'EOF';
 EOF
 
 is($type->to_hcard, $comparison);
+
+# Psychotic test brought to you by http://hcard.geekhood.net/encode/
+my $psychotic = << 'EOF';
+<a 
+class='email
+href="mailto:me"
+' 
+href 
+= '	
+&#x20;&#109;a&#x69;&#x6C;to&#x3a;&#x20;&#x74;&#101;s&#x25;&#x37;&#x34;%&#52;0&#x65;&#x78;&#37;&#x36;&#49;&#109;&#x70;&#x6c;e&#x25;&#x32;&#x65;c%&#x36;&#102;&#x6D;?
+'>&#x74;&#x65;&#115;t@&#x65;&#x78;a<!--
+mailto:abuse@hotmail.com
+</a>
+-->&shy;&#x6D;&#112;le&#x2e;com</a>
+EOF
+
+ok($type = Data::Microformat::hCard::type->parse($psychotic));
+
+is ($type->value, 'test@example.com');

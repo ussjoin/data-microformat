@@ -39,6 +39,7 @@ sub from_tree
 				{
 					$data = $class->_trim($bit->attr('href'));
 					$data =~ s/^(mailto|tel)\://;
+					$data =~ s/\?$//;
 				}
 				
 				if ($type eq $object->kind)
@@ -56,6 +57,7 @@ sub from_tree
 			# This check deals with non-nested mailto links-- such as are created by the official hCard creator.
 			my $data = $class->_trim($tree->attr('href'));
 			$data =~ s/^(mailto|tel)\://;
+			$data =~ s/\?$//;
 			$object->value($data);
 		}
 		else

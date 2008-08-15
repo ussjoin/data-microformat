@@ -7,6 +7,7 @@ our $VERSION = "0.01";
 
 our $AUTOLOAD;
 
+use HTML::Entities;
 use HTML::TreeBuilder;
 use HTML::Stream qw(html_escape);
 use Carp;
@@ -103,7 +104,8 @@ sub AUTOLOAD
 	}
 	else
 	{
-		carp(ref($self)." does not have a parameter called $name.\n") unless $name =~ m/DESTROY/;
+		# warn(ref($self)." does not have a parameter called $name.\n") unless $name =~ m/DESTROY/;
+		# Do nothing here, as there's no need to warn that some parts of hCards aren't valid
 	}
 }
 
@@ -112,6 +114,14 @@ sub parse
 	my $class = shift;
 	my $content = shift;
 	my $representative_url = shift;
+	
+	# These few transforms allow us to decode "psychotic" encodings, see t/03type.t for details
+	$content =~ tr/+/ /;
+	$content =~ s/%([a-fA-F0-9]{2,2})/chr(hex($1))/eg;
+	$content =~ s/<!–(.|\n)*–>//g;
+	decode_entities($content);
+	$content =~ s/%(..)/pack("C",hex($1))/eg;
+	
 	my $tree = HTML::TreeBuilder->new_from_content($content);
 	$tree->elementify;
 	
@@ -231,8 +241,14 @@ sub _trim
 	
 	if ($content)
 	{
-		$content =~ s/^\s//;
-		$content =~ s/\s$//;
+		while ($content =~ s/^\s//)
+		{
+			1;
+		}
+		while ($content =~ s/\s$//)
+		{
+			1;
+		}
 	}
 	return $content;
 }
@@ -302,6 +318,8 @@ for markup, rather than <span> tags, and is not indented.
 =head1 DEPENDENCIES
 
 This module relies upon the following other modules:
+
+L<HTML::Entities|HTML::Entities>
 
 L<HTML::TreeBuilder|HTML::TreeBuilder>
 
