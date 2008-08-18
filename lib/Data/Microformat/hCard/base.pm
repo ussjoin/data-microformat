@@ -241,14 +241,8 @@ sub _trim
 	
 	if ($content)
 	{
-		while ($content =~ s/^\s//)
-		{
-			1;
-		}
-		while ($content =~ s/\s$//)
-		{
-			1;
-		}
+		$content =~ s/^\s+//;
+		$content =~ s/\s+$//;
 	}
 	return $content;
 }
