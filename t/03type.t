@@ -3,7 +3,7 @@
 use strict;
 use Data::Microformat::hCard::type;
 
-use Test::More tests => 15;
+use Test::More tests => 18;
 
 #Basic type taken from the microformats wiki: http://microformats.org/wiki/hcard
 my $simple = << 'EOF';
@@ -27,6 +27,13 @@ my $comparison = << 'EOF';
 EOF
 is ($type->to_hcard, $comparison);
 
+my $text_comparison = << 'EOF';
+tel: 
+	value: 1.415.555.1212
+	type: Home
+EOF
+is($type->to_text, $text_comparison);
+
 my $medium = << 'EOF';
 <span class="email"><span class="type">Work</span> test@example.com</span>
 EOF
@@ -46,6 +53,13 @@ EOF
 
 is($type->to_hcard, $comparison);
 
+$text_comparison = << 'EOF';
+email: 
+	value: test@example.com
+	type: Work
+EOF
+is($type->to_text, $text_comparison);
+
 my $hard = << 'EOF';
 <a class="email" href="mailto:test@example.com">Email</a>
 EOF
@@ -61,6 +75,12 @@ $comparison = << 'EOF';
 EOF
 
 is($type->to_hcard, $comparison);
+
+$text_comparison = << 'EOF';
+email: 
+	value: test@example.com
+EOF
+is($type->to_text, $text_comparison);
 
 # Psychotic test brought to you by http://hcard.geekhood.net/encode/
 my $psychotic = << 'EOF';

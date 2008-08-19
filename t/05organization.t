@@ -3,7 +3,7 @@
 use strict;
 use Data::Microformat::hCard::organization;
 
-use Test::More tests => 7;
+use Test::More tests => 9;
 
 my $simple = << 'EOF';
 <span class="org">
@@ -26,6 +26,13 @@ EOF
 
 is($org->to_hcard, $comparison);
 
+my $text_comparison = << 'EOF';
+org: 
+	organization-name: Zaphod for President
+	organization-unit: Dirty Tricks
+EOF
+is($org->to_text, $text_comparison);
+
 my $medium = << 'EOF';
 <span class="org">Zaphod for President</span>
 
@@ -42,3 +49,9 @@ $comparison = << 'EOF';
 EOF
 
 is($org->to_hcard, $comparison);
+
+$text_comparison = << 'EOF';
+org: 
+	organization-name: Zaphod for President
+EOF
+is($org->to_text, $text_comparison);

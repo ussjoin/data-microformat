@@ -3,7 +3,7 @@
 use strict;
 use Data::Microformat::geo;
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 
 my $simple = << 'EOF';
 <div class="geo">GEO: 
@@ -25,3 +25,10 @@ my $comparison = << 'EOF';
 EOF
 
 is($geo->to_hcard, $comparison);
+
+my $text_comparison = << 'EOF';
+geo: 
+	latitude: 37.779598
+	longitude: -122.398453
+EOF
+is($geo->to_text, $text_comparison);

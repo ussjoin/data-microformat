@@ -1,12 +1,16 @@
 Revision history for Data-Microformat
 
 0.02	Date?
-		Added support for "psychotic" encodings, a la 
-			http://hcard.geekhood.net/encode/ .
-		Now using HTML::Element for dumping the hCards out, so we get nicer
-			formatting and easier output, essentially for free (no extra
-			dependencies).
-		
+		Bugfixes:
+			Added support for "psychotic" encodings, a la 
+				http://hcard.geekhood.net/encode/ .
+			Fixed nested vcards discarding their secondary class, as in
+			t/08nested.t.
+		New Features:
+			Now using HTML::Element for dumping the hCards out, so we get nicer
+				formatting and easier output, essentially for free (no extra
+				dependencies).
+			Added to_text, to return a plaintext representation of an hCard.
 
 0.01    August 11, 2008
         First version, released on an unsuspecting world.

@@ -3,7 +3,7 @@
 use strict;
 use Data::Microformat::adr;
 
-use Test::More tests => 8;
+use Test::More tests => 9;
 
 #Basic adr taken from the microformats wiki: http://microformats.org/wiki/adr
 my $simple = << 'EOF';
@@ -38,3 +38,14 @@ my $comparison = << 'EOF';
 EOF
 
 is($adr->to_hcard, $comparison);
+
+my $text_comparison = << 'EOF';
+adr: 
+	street-address: 665 3rd St.
+	extended-address: Suite 207
+	locality: San Francisco
+	region: CA
+	postal-code: 94107
+	country-name: U.S.A.
+EOF
+is($adr->to_text, $text_comparison);

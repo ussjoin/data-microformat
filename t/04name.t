@@ -3,7 +3,7 @@
 use strict;
 use Data::Microformat::hCard::name;
 
-use Test::More tests => 7;
+use Test::More tests => 8;
 
 my $simple = << 'EOF';
 <span class="n">
@@ -35,3 +35,13 @@ my $comparison = << 'EOF';
 EOF
 
 is($name->to_hcard, $comparison);
+
+my $text_comparison = << 'EOF';
+n: 
+	honorific-prefix: His High Judgmental Supremacy
+	given-name: Zipo
+	additional-name: Judiciary
+	family-name: Pag
+	honorific-suffix: Learned, Impartial, and Very Relaxed
+EOF
+is($name->to_text, $text_comparison);

@@ -198,6 +198,39 @@ sub to_hcard
 	return $ret;
 }
 
+sub to_text
+{
+	my $self  = shift;
+	
+	my $tree = $self->_to_hcard_elements;
+	my $ret = _as_text($tree);
+	$tree->delete;
+	
+	return $ret;
+}
+
+sub _as_text
+{
+	my $tree = shift;
+	
+	if (scalar $tree->descendants == 0)
+	{
+		return $tree->attr('class').": ".$tree->as_text;
+	}
+	
+	my $ret = $tree->attr('class').": \n";
+	
+	foreach my $child ($tree->content_list)
+	{
+		next unless (ref($child) =~ m/HTML::Element/);		
+		my $temp = _as_text($child);
+		$temp .= "\n" unless ($temp =~ m/\n$/s);
+		$temp =~ s/^/\t/gm;
+		$ret .= $temp;
+	}
+	return $ret;
+}
+
 sub _to_hcard_elements
 {
 	my $self  = shift;
@@ -217,6 +250,10 @@ sub _to_hcard_elements
 		{
 			# Then take the return and root it to our root
 			my $child = $self->{$field}->_to_hcard_elements;
+			if ($child->attr('class') eq "vcard")
+			{
+				$child->attr('class', $field." vcard"); # Since we know it's a vcard
+			}
 			$root->push_content($child);
 		}
 		else
@@ -240,6 +277,10 @@ sub _to_hcard_elements
 			{
 				# Then take the return and root it to our root
 				my $child = $value->_to_hcard_elements;
+				if ($child->attr('class') eq "vcard")
+				{
+					$child->attr('class', $field." vcard"); # Since we know it's a vcard
+				}
 				$root->push_content($child);
 			}
 			else
@@ -325,8 +366,14 @@ Certain modules may override this if they have specific parsing concerns.
 This method, called on an instance of Data::Microformat::hCard::base or its subclasses, will return
 an hCard HTML representation of the data present. This is most likely to be
 used when building your own microformatted data, but can be called on parsed content as
-well. The returned data is very lightly formatted; it uses only <div> tags
-for markup, rather than <span> tags, and is not indented.
+well. The returned data is very lightly formatted, and it uses only <div> tags
+for markup, rather than <span> tags.
+
+=head2 $base->to_text
+
+This method, called on an instance of Data::Microformat::hCard::base or its subclasses, will return
+a plain text representation of the data present. This format uses indentation to show nesting,
+and attempts to be easily human-readable.
 
 =head1 DEPENDENCIES
 

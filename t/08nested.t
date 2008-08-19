@@ -3,7 +3,7 @@
 use strict;
 use Data::Microformat::hCard;
 
-use Test::More tests => 7;
+use Test::More tests => 8;
 
 my $simple = << 'EOF';
 <div class="vcard nestification">
@@ -31,7 +31,7 @@ my $comparison = << 'EOF';
 		<div class="given-name">Alice</div>
 		<div class="family-name">Adams</div>
 	</div>
-	<div class="vcard">
+	<div class="agent vcard">
 		<div class="fn">Bob Barker</div>
 		<div class="n">
 			<div class="given-name">Bob</div>
@@ -44,3 +44,19 @@ my $comparison = << 'EOF';
 EOF
 
 is($card->to_hcard, $comparison);
+
+my $text_comparison = << 'EOF';
+vcard: 
+	fn: Alice Adams
+	n: 
+		given-name: Alice
+		family-name: Adams
+	agent vcard: 
+		fn: Bob Barker
+		n: 
+			given-name: Bob
+			family-name: Barker
+		nickname: Yuppie
+	nickname: Needs an Agent
+EOF
+is($card->to_text, $text_comparison);
