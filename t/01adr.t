@@ -28,12 +28,12 @@ is($adr->country_name, "U.S.A.");
 
 my $comparison = << 'EOF';
 <div class="adr">
-<div class="street-address">665 3rd St.</div>
-<div class="extended-address">Suite 207</div>
-<div class="locality">San Francisco</div>
-<div class="region">CA</div>
-<div class="postal-code">94107</div>
-<div class="country-name">U.S.A.</div>
+	<div class="street-address">665 3rd St.</div>
+	<div class="extended-address">Suite 207</div>
+	<div class="locality">San Francisco</div>
+	<div class="region">CA</div>
+	<div class="postal-code">94107</div>
+	<div class="country-name">U.S.A.</div>
 </div>
 EOF
 

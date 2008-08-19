@@ -26,20 +26,20 @@ is($nest->nickname, "Yuppie");
 
 my $comparison = << 'EOF';
 <div class="vcard">
-<div class="fn">Alice Adams</div>
-<div class="n">
-<div class="given-name">Alice</div>
-<div class="family-name">Adams</div>
-</div>
-<div class="vcard">
-<div class="fn">Bob Barker</div>
-<div class="n">
-<div class="given-name">Bob</div>
-<div class="family-name">Barker</div>
-</div>
-<div class="nickname">Yuppie</div>
-</div>
-<div class="nickname">Needs an Agent</div>
+	<div class="fn">Alice Adams</div>
+	<div class="n">
+		<div class="given-name">Alice</div>
+		<div class="family-name">Adams</div>
+	</div>
+	<div class="vcard">
+		<div class="fn">Bob Barker</div>
+		<div class="n">
+			<div class="given-name">Bob</div>
+			<div class="family-name">Barker</div>
+		</div>
+		<div class="nickname">Yuppie</div>
+	</div>
+	<div class="nickname">Needs an Agent</div>
 </div>
 EOF
 

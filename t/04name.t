@@ -26,11 +26,11 @@ is($name->honorific_suffix, "Learned, Impartial, and Very Relaxed");
 
 my $comparison = << 'EOF';
 <div class="n">
-<div class="honorific-prefix">His High Judgmental Supremacy</div>
-<div class="given-name">Zipo</div>
-<div class="additional-name">Judiciary</div>
-<div class="family-name">Pag</div>
-<div class="honorific-suffix">Learned, Impartial, and Very Relaxed</div>
+	<div class="honorific-prefix">His High Judgmental Supremacy</div>
+	<div class="given-name">Zipo</div>
+	<div class="additional-name">Judiciary</div>
+	<div class="family-name">Pag</div>
+	<div class="honorific-suffix">Learned, Impartial, and Very Relaxed</div>
 </div>
 EOF
 

@@ -19,8 +19,8 @@ is($org->organization_unit, "Dirty Tricks");
 
 my $comparison = << 'EOF';
 <div class="org">
-<div class="organization-name">Zaphod for President</div>
-<div class="organization-unit">Dirty Tricks</div>
+	<div class="organization-name">Zaphod for President</div>
+	<div class="organization-unit">Dirty Tricks</div>
 </div>
 EOF
 
@@ -37,7 +37,7 @@ is($org->organization_name, "Zaphod for President");
 
 $comparison = << 'EOF';
 <div class="org">
-<div class="organization-name">Zaphod for President</div>
+	<div class="organization-name">Zaphod for President</div>
 </div>
 EOF
 

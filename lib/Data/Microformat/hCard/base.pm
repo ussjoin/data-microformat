@@ -3,7 +3,7 @@ package Data::Microformat::hCard::base;
 use strict;
 use warnings;
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 our $AUTOLOAD;
 
@@ -190,27 +190,42 @@ sub from_tree
 sub to_hcard
 {
 	my $self  = shift;
-	my $thing = shift;
+	
+	my $tree = $self->_to_hcard_elements;
+	my $ret = $tree->as_HTML('<>&', "\t", { });
+	$tree->delete;
+	
+	return $ret;
+}
+
+sub _to_hcard_elements
+{
+	my $self  = shift;
+	
 	my $class_name = $self->{_class_name};
 	
 	if (defined $self->{kind})
 	{
 		$class_name = $self->{kind};
 	}
-	my $ret   = "<div class=\"$class_name\">\n";
+	my $root = HTML::Element->new('div', class => $class_name);
 	for my $field ($self->singular_fields)
 	{
 		next unless defined $self->{$field};
 		next if ($field eq "kind");
 		if (ref($self->{$field}) =~ m/Data::Microformat/)
 		{
-			$ret.= $self->{$field}->to_hcard;
+			# Then take the return and root it to our root
+			my $child = $self->{$field}->_to_hcard_elements;
+			$root->push_content($child);
 		}
 		else
 		{
 			my $name = $field;
 			$name =~ tr/_/-/;
-			$ret .= "<div class=\"$name\">".html_escape($self->{$field})."</div>\n";
+			my $child = HTML::Element->new('div', class => $name);
+			$child->push_content($self->{$field});
+			$root->push_content($child);
 		}
 	}
 	for my $field ($self->plural_fields)
@@ -223,15 +238,19 @@ sub to_hcard
 		{
 			if (ref($value) =~ m/Data::Microformat/)
 			{
-				$ret.= $value->to_hcard;
+				# Then take the return and root it to our root
+				my $child = $value->_to_hcard_elements;
+				$root->push_content($child);
 			}
 			else
 			{
-				$ret .= "<div class=\"$name\">".html_escape($value)."</div>\n";
+				my $child = HTML::Element->new('div', class => $name);
+				$child->push_content($value);
+				$root->push_content($child);
 			}
 		}
 	}
-	$ret .= "</div>\n";
+	return $root;
 }
 
 sub _trim

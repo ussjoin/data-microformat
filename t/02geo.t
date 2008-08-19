@@ -19,8 +19,8 @@ is($geo->longitude, "-122.398453");
 
 my $comparison = << 'EOF';
 <div class="geo">
-<div class="latitude">37.779598</div>
-<div class="longitude">-122.398453</div>
+	<div class="latitude">37.779598</div>
+	<div class="longitude">-122.398453</div>
 </div>
 EOF
 
