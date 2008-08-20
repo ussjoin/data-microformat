@@ -4,7 +4,7 @@ use base qw(Data::Microformat::hCard::base);
 use strict;
 use warnings;
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 use Data::Microformat::adr;
 use Data::Microformat::geo;
@@ -370,10 +370,10 @@ This documentation refers to Data::Microformat::hCard version 0.01.
 	$new_card->fn("Brendan O'Connor");
 	$new_card->nickname("USSJoin");
 
-	my $new_email = Data::Microformat::hCard::type;
-	$new_email->kind = "email";
-	$new_email->type = "Perl";
-	$new_email->value = "perl@ussjoin.com";
+	my $new_email = Data::Microformat::hCard::type->new;
+	$new_email->kind("email");
+	$new_email->type("Perl");
+	$new_email->value("perl@ussjoin.com");
 	$new_card->email($new_email);
 
 	print "Here's the new hCard I've just made:\n";
@@ -619,6 +619,8 @@ Brendan O'Connor, C<< <perl at ussjoin.com> >>
 =head1 COPYRIGHT
 
 Copyright 2008, Six Apart Ltd. All rights reserved.
+
+=head1 LICENSE
 
 This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 

@@ -1,9 +1,10 @@
 #!perl -w
 
 use strict;
+use Test::NoWarnings;
 use Data::Microformat::hCard;
 
-use Test::More tests => 32;
+use Test::More tests => 33;
 
 my $simple = << 'EOF';
 <div class="vcard">

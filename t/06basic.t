@@ -1,9 +1,10 @@
 #!perl -w
 
 use strict;
+use Test::NoWarnings;
 use Data::Microformat::hCard;
 
-use Test::More tests => 26;
+use Test::More tests => 27;
 
 #Basic card taken from the microformats wiki: http://microformats.org/wiki/hcard
 my $simple = << 'EOF';

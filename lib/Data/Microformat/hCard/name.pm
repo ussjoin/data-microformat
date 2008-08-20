@@ -4,6 +4,8 @@ use base qw(Data::Microformat::hCard::base);
 use strict;
 use warnings;
 
+our $VERSION = "0.02";
+
 sub class_name { "n" }
 sub plural_fields { qw() }
 sub singular_fields { qw(honorific_prefix given_name additional_name family_name honorific_suffix) }
@@ -78,6 +80,8 @@ Brendan O'Connor, C<< <perl at ussjoin.com> >>
 =head1 COPYRIGHT
 
 Copyright 2008, Six Apart Ltd. All rights reserved.
+
+=head1 LICENSE
 
 This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 

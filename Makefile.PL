@@ -8,6 +8,7 @@ WriteMakefile(
     VERSION_FROM        => 'lib/Data/Microformat/hCard/base.pm',
     ABSTRACT            => 'A module to parse and create hCards and related microformats',
     PL_FILES            => {},
+	LICENSE				=> 'perl',
     PREREQ_PM => {
         'Test::More' => 0,
 		'HTML::Entities' => 0,

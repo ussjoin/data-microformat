@@ -1,9 +1,10 @@
 #!perl -w
 
 use strict;
+use Test::NoWarnings;
 use Data::Microformat::geo;
 
-use Test::More tests => 5;
+use Test::More tests => 6;
 
 my $simple = << 'EOF';
 <div class="geo">GEO: 

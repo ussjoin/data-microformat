@@ -4,6 +4,8 @@ use base qw(Data::Microformat::hCard::base);
 use strict;
 use warnings;
 
+our $VERSION = "0.02";
+
 sub class_name { "adr" }
 sub plural_fields { qw(type) }
 sub singular_fields { qw(post_office_box street_address extended_address locality region postal_code country_name) }
@@ -136,6 +138,8 @@ Brendan O'Connor, C<< <perl at ussjoin.com> >>
 =head1 COPYRIGHT
 
 Copyright 2008, Six Apart Ltd. All rights reserved.
+
+=head1 LICENSE
 
 This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 

@@ -4,6 +4,8 @@ use base qw(Data::Microformat::hCard::base);
 use strict;
 use warnings;
 
+our $VERSION = "0.02";
+
 sub class_name { "geo" }
 sub plural_fields { }
 sub singular_fields { qw(latitude longitude) }

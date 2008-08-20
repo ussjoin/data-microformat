@@ -1,8 +1,10 @@
 .shipit
 Changes
+LICENSE
 MANIFEST
 Makefile.PL
 README
+examples/Data_Microformat_Example.pl
 lib/Data/Microformat/adr.pm
 lib/Data/Microformat/geo.pm
 lib/Data/Microformat/hCard.pm

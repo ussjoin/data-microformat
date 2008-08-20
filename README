@@ -44,11 +44,14 @@ to output the hCard, simply write
 	my $output = $card->to_hcard;
 
 And $output will be filled with an hCard representation, using <div> tags
-exclusively with the relevant class names.
+exclusively with the relevant class names. If you'd like instead to get a plain
+text representation, write
+
+	my $text = $card->to_text;
 
 If you would like to have the parser determine the representative hCard for a
 page, simply pass the page's URL as an additional parameter to the parse or
-from_tree methods, and the appropriate property will be found if it can
+from_tree methods, and the appropriate property will be set if it can
 be determined.
 
 For information on precisely what types of strings are intended for each

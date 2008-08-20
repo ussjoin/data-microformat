@@ -403,6 +403,8 @@ Brendan O'Connor, C<< <perl at ussjoin.com> >>
 
 Copyright 2008, Six Apart Ltd. All rights reserved.
 
+=head1 LICENSE
+
 This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
 This program is distributed in the hope that it will be useful, but without any warranty; without even the
