@@ -1,8 +1,9 @@
 Revision history for Data-Microformat
 
-0.03	Unknown Date
+0.03	August 21, 2008
 		Bugfixes:
 			Fixed one slight problem with "psychotic" encodings.
+			Fixed a dependency problem causing build FAILing on some platforms.
 
 0.02	August 19, 2008
 		Bugfixes:

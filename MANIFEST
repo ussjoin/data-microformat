@@ -1,8 +1,8 @@
 .shipit
+Build.PL
 Changes
 LICENSE
 MANIFEST
-Makefile.PL
 README
 examples/Data_Microformat_Example.pl
 lib/Data/Microformat.pm
@@ -28,3 +28,5 @@ t/12semantics.t
 t/13representative.t
 t/pod-coverage.t
 t/pod.t
+Makefile.PL
+META.yml
