@@ -4,7 +4,7 @@ use base qw(Data::Microformat::hCard::base);
 use strict;
 use warnings;
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 use Data::Microformat::adr;
 use Data::Microformat::geo;
@@ -120,6 +120,7 @@ sub from_tree
 				my $nested_goes_here;
 				my $hcard_class = $bit->attr('class');
 				next unless $hcard_class;
+				
 				#Check for nested vcard.
 				if ($hcard_class =~ m/vcard/)
 				{

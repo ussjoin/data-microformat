@@ -1,11 +1,15 @@
 Revision history for Data-Microformat
 
-0.02	Date?
+0.03	Unknown Date
+		Bugfixes:
+			Fixed one slight problem with "psychotic" encodings.
+
+0.02	August 19, 2008
 		Bugfixes:
 			Added support for "psychotic" encodings, a la 
 				http://hcard.geekhood.net/encode/ .
 			Fixed nested vcards discarding their secondary class, as in
-			t/08nested.t.
+				t/08nested.t.
 			Fixed issues hurting the Kwalitee of the distribution.
 		New Features:
 			Now using HTML::Element for dumping the hCards out, so we get nicer
@@ -14,5 +18,5 @@ Revision history for Data-Microformat
 			Added to_text, to return a plaintext representation of an hCard.
 
 0.01    August 11, 2008
-        First version, released on an unsuspecting world.
+        	First version, released on an unsuspecting world.
 

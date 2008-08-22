@@ -4,7 +4,7 @@ use base qw(Data::Microformat::hCard::base);
 use strict;
 use warnings;
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 sub class_name { "n" }
 sub plural_fields { qw() }

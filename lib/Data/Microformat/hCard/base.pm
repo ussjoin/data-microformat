@@ -3,7 +3,7 @@ package Data::Microformat::hCard::base;
 use strict;
 use warnings;
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 our $AUTOLOAD;
 
@@ -303,6 +303,18 @@ sub _trim
 	{
 		$content =~ s/^\s+//;
 		$content =~ s/\s+$//;
+	}
+	return $content;
+}
+
+sub _remove_newlines
+{
+	my $class = shift;
+	my $content = shift;
+	if ($content)
+	{
+		$content =~ s/\n/ /g;
+		$content =~ s/\r/ /g;
 	}
 	return $content;
 }
