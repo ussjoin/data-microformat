@@ -1,5 +1,5 @@
 package Data::Microformat::hCard::name;
-use base qw(Data::Microformat::hCard::base);
+use base qw(Data::Microformat);
 
 use strict;
 use warnings;
@@ -20,7 +20,7 @@ Data::Microformat::hCard::name - A module to parse and create names within hCard
 
 =head1 VERSION
 
-This documentation refers to Data::Microformat::hCard::name version 0.01.
+This documentation refers to Data::Microformat::hCard::name version 0.03.
 
 =head1 DESCRIPTION
 

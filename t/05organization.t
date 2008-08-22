@@ -1,10 +1,9 @@
 #!perl -w
 
 use strict;
-use Test::NoWarnings;
 use Data::Microformat::hCard::organization;
 
-use Test::More tests => 10;
+use Test::More tests => 9;
 
 my $simple = << 'EOF';
 <span class="org">

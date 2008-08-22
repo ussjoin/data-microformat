@@ -1,4 +1,4 @@
-package Data::Microformat::hCard::base;
+package Data::Microformat;
 
 use strict;
 use warnings;
@@ -325,11 +325,11 @@ __END__
 
 =head1 NAME
 
-Data::Microformat::hCard::base - A base class for hCards and related modules
+Data::Microformat - A base class for hCards and related modules
 
 =head1 VERSION
 
-This documentation refers to Data::Microformat::hCard::base version 0.01.
+This documentation refers to Data::Microformat version 0.03.
 
 =head1 DESCRIPTION
 
@@ -340,14 +340,14 @@ as a base class for other Data::Microformat modules.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 Data::Microformat::hCard::base->new
+=head2 Data::Microformat->new
 
 This method creates a new instance of whatever subclass on which it was called.
 
-This method should not be called directly on Data::Microformat::hCard::base, as
+This method should not be called directly on Data::Microformat, as
 it will not be particularly useful.
 
-=head2 Data::Microformat::hCard::base->parse($content [, $url])
+=head2 Data::Microformat->parse($content [, $url])
 
 This method simply takes the content passed in and makes an HTML tree out of
 it, then hands it off to the from_tree method to do the actual interpretation.
@@ -359,7 +359,7 @@ If you are calling this method on the hCard class, you can pass an additional
 parameter of the source URL, and this will allow the representative hCard to be
 determined. This parameter is optional.
 
-=head2 Data::Microformat::hCard::base->from_tree($tree)
+=head2 Data::Microformat->from_tree($tree)
 
 This method takes an L<HTML::Element|HTML::Element> tree and finds microformats in
 it. It will return one or many of the calling class (assuming it finds them) depending on
@@ -375,7 +375,7 @@ Certain modules may override this if they have specific parsing concerns.
 
 =head2 $base->to_hcard
 
-This method, called on an instance of Data::Microformat::hCard::base or its subclasses, will return
+This method, called on an instance of Data::Microformat or its subclasses, will return
 an hCard HTML representation of the data present. This is most likely to be
 used when building your own microformatted data, but can be called on parsed content as
 well. The returned data is very lightly formatted, and it uses only <div> tags
@@ -383,7 +383,7 @@ for markup, rather than <span> tags.
 
 =head2 $base->to_text
 
-This method, called on an instance of Data::Microformat::hCard::base or its subclasses, will return
+This method, called on an instance of Data::Microformat or its subclasses, will return
 a plain text representation of the data present. This format uses indentation to show nesting,
 and attempts to be easily human-readable.
 

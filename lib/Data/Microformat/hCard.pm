@@ -1,5 +1,5 @@
 package Data::Microformat::hCard;
-use base qw(Data::Microformat::hCard::base);
+use base qw(Data::Microformat);
 
 use strict;
 use warnings;
@@ -355,7 +355,7 @@ Data::Microformat::hCard - A module to parse and create hCards
 
 =head1 VERSION
 
-This documentation refers to Data::Microformat::hCard version 0.01.
+This documentation refers to Data::Microformat::hCard version 0.03.
 
 =head1 SYNOPSIS
 
@@ -454,7 +454,7 @@ called in scalar context.
 =head2 Data::Microformat::organization->from_tree($tree [, $source_url])
 
 This method overrides but provides the same functionality as the
-method of the same name in L<Data::Microformat::hCard::base>, with the optional
+method of the same name in L<Data::Microformat>, with the optional
 addition of $source_url. If present, this latter term will trigger a search to
 find the "representative hCard" for the given page, using the specifications
 for representative hCard parsing; a card's status of representative or not can

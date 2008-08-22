@@ -1,10 +1,9 @@
 #!perl -w
 
 use strict;
-use Test::NoWarnings;
 use Data::Microformat::adr;
 
-use Test::More tests => 10;
+use Test::More tests => 9;
 
 #Basic adr taken from the microformats wiki: http://microformats.org/wiki/adr
 my $simple = << 'EOF';

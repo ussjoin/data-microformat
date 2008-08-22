@@ -1,5 +1,5 @@
 package Data::Microformat::hCard::organization;
-use base qw(Data::Microformat::hCard::base);
+use base qw(Data::Microformat);
 
 use strict;
 use warnings;
@@ -63,7 +63,7 @@ Data::Microformat::hCard::organization - A module to parse and create orgs withi
 
 =head1 VERSION
 
-This documentation refers to Data::Microformat::hCard::organization version 0.01.
+This documentation refers to Data::Microformat::hCard::organization version 0.03.
 
 =head1 DESCRIPTION
 
@@ -75,7 +75,7 @@ organizations in hCards.
 =head2 Data::Microformat::organization->from_tree($tree)
 
 This method overrides but provides the same functionality as the
-method of the same name in L<Data::Microformat::hCard::base>.
+method of the same name in L<Data::Microformat>.
 
 =head2 class_name
 

@@ -5,7 +5,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME                => 'Data::Microformat',
     AUTHOR              => 'Brendan O\'Connor <perl@ussjoin.com>',
-    VERSION_FROM        => 'lib/Data/Microformat/hCard/base.pm',
+    VERSION_FROM        => 'lib/Data/Microformat.pm',
     ABSTRACT            => 'A module to parse and create hCards and related microformats',
     PL_FILES            => {},
 	LICENSE				=> 'perl',
