@@ -1,5 +1,11 @@
 Revision history for Data-Microformat
 
+0.04	Date?
+		Bugfixes:
+			Fixed a problem with accidentally sucking CSS into the psychotic decoder.
+				This problem was helpfully found, and a fix provided, by Simon
+				Wistow L<http://search.cpan.org/~simonw/>.
+
 0.03	August 21, 2008
 		Bugfixes:
 			Fixed one slight problem with "psychotic" encodings.

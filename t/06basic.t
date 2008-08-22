@@ -6,7 +6,13 @@ use Data::Microformat::hCard;
 use Test::More tests => 26;
 
 #Basic card taken from the microformats wiki: http://microformats.org/wiki/hcard
+#CSS nonsense taken from http://thegestalt.org/simon, see 0.04 changelog
 my $simple = << 'EOF';
+<style type="text/css">
+body { background-color: #ddd; color: #222;             }
+h1   { font-size: 160%; font-weight: normal; margin: 0; }
+h2   { font-size: 110%; font-weight: normal; margin: 0; }
+</style>
 <div class="vcard">
   <a class="fn org url" href="http://www.commerce.net/">CommerceNet</a>
   <div class="adr">

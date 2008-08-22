@@ -8,7 +8,7 @@ my $build = Module::Build
          license      => 'perl',
 		 dist_author  => 'Brendan O\'Connor <perl@ussjoin.com>',
 		 dist_abstrct => 'A module to parse and create hCards and related microformats',
-		 dist_version => 0.03,
+		 dist_version => 0.04,
 		 build_requires => {
 							'Pod::Coverage'			=> '>= 0.18',
 							'Test::More'            => 0,

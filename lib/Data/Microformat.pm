@@ -3,7 +3,7 @@ package Data::Microformat;
 use strict;
 use warnings;
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 our $AUTOLOAD;
 
@@ -119,8 +119,8 @@ sub parse
 	$content =~ tr/+/ /;
 	$content =~ s/%([a-fA-F0-9]{2,2})/chr(hex($1))/eg;
 	$content =~ s/<!–(.|\n)*–>//g;
-	decode_entities($content);
-	$content =~ s/%(..)/pack("C",hex($1))/eg;
+	$content = decode_entities($content);
+	$content =~ s/%([A-F0-9]{2})/pack("C",hex($1))/ieg;
 	
 	my $tree = HTML::TreeBuilder->new_from_content($content);
 	$tree->elementify;
