@@ -5,20 +5,21 @@ use base qw(Data::Microformat);
 use Data::Microformat::hFeed::hEntry;
 
 sub class_name { "hfeed" }
-sub singular_fields { qw(title link tagline description author modified copyright generator) }
+sub singular_fields { qw(title base link tagline description author modified copyright generator) }
 sub plural_fields { qw(entries categories) }
 
 sub from_tree {
  	my $class = shift;
     my $tree  = shift;
+	my $url   = shift;
 
 	my @feeds;
 	foreach my $feed_tree ($tree->look_down('class', qr/hfeed/)) {
-		push @feeds, $class->_convert($feed_tree);
+		push @feeds, $class->_convert($feed_tree, $url);
 	}
 	# As per the spec :
     # "the Feed element is optional and, if missing, is assumed to be the page"
-	push @feeds, $class->_convert($tree) unless @feeds;
+	push @feeds, $class->_convert($tree, $url) unless @feeds;
 
 	return wantarray ? @feeds : $feeds[0];
 }
@@ -28,7 +29,12 @@ sub generator { shift->SUPER::generator(@_) || __PACKAGE__ }
 sub _convert {
 	my $class = shift;
 	my $tree  = shift;
+	my $url   = shift;
 	my $feed = $class->new;
+	if (defined $url) {
+		$feed->link($url);
+		$feed->base($url);
+	}
 	my %tags;
 	$tree->look_down(sub {
 		my $bit = shift;
@@ -36,7 +42,7 @@ sub _convert {
 		if (!$feed_class) {
 			return 0;
 		} elsif (_match($feed_class, 'hentry')) {
-			$feed->entries(Data::Microformat::hFeed::hEntry->from_tree($bit));
+			$feed->entries(Data::Microformat::hFeed::hEntry->from_tree($bit, $url));
         } elsif (_match($feed_class, 'feed-title')) {
 			$feed->title($bit->as_text);
         } elsif (_match($feed_class, 'title')) {
@@ -50,7 +56,7 @@ sub _convert {
 		} elsif (_match($feed_class, 'license')) {
 			$feed->copyright({ href => $class->_url_decode($bit->attr('href')), text => $bit->as_text });
 		} elsif (_match($feed_class,'vcard')) {
-			my $card = Data::Microformat::hCard->from_tree($bit);
+			my $card = Data::Microformat::hCard->from_tree($bit, $url);
 			$feed->author($card);
 		} elsif (_match($feed_class, 'bookmark')) {
 			$feed->link($class->_url_decode($bit->attr('href')));
@@ -160,6 +166,13 @@ This is a method to list all the fields on an address that can hold exactly one 
 
 This is a method to list all the fields on an address that can hold multiple values.
 
+=head2 Data::Microformat::organization->from_tree($tree [, $source_url])
+
+This method overrides but provides the same functionality as the
+method of the same name in L<Data::Microformat>, with the optional
+addition of $source_url. If present, this latter term will set the link
+and the base of the feed automatically.
+
 =head2 id
 
 The id of this feed.
@@ -167,6 +180,10 @@ The id of this feed.
 =head2 title
 
 The title of this feed.
+
+=head2 base
+
+The base of this feed if available.
 
 =head2 link
 

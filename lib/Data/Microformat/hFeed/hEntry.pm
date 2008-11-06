@@ -6,15 +6,16 @@ use Data::Microformat::hCard;
 use DateTime::Format::W3CDTF;
 
 sub class_name { "hentry" }
-sub singular_fields { qw(id title content summary modified issued link author) }
+sub singular_fields { qw(id base title content summary modified issued link author) }
 sub plural_fields { qw(tags) }
 
 sub from_tree {
  	my $class = shift;
     my $tree  = shift;
+	my $url   = shift;
 	my @entries;
 	foreach my $entry_tree ($tree->look_down('class', qr/hentry/)) {
-		push @entries, $class->_convert($entry_tree);
+		push @entries, $class->_convert($entry_tree, $url);
 	}
 	return wantarray ? @entries : $entries[0];
 }
@@ -22,7 +23,9 @@ sub from_tree {
 sub _convert {
 	my $class = shift;
 	my $tree  = shift;
+	my $url   = shift;
 	my $entry = $class->new;
+	$entry->base($url) if $url;
 	$tree->look_down(sub {
 		my $bit = shift;
 		my $entry_class = $bit->attr('class') || $bit->attr('rel') || return 0;
@@ -151,6 +154,13 @@ This is a method to list all the fields on an address that can hold exactly one 
 
 This is a method to list all the fields on an address that can hold multiple values.
 
+=head2 Data::Microformat::organization->from_tree($tree [, $source_url])
+
+This method overrides but provides the same functionality as the
+method of the same name in L<Data::Microformat>, with the optional
+addition of $source_url. If present, this latter term will set the
+base of the entry automatically.
+
 =head2 id
 
 The id of this entry.
@@ -158,6 +168,10 @@ The id of this entry.
 =head2 title
 
 The title of this entry.
+
+=head2 base
+
+The base of this entry if available.
 
 =head2 link
 
