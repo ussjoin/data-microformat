@@ -5,7 +5,7 @@ use base qw(Data::Microformat);
 use Data::Microformat::hFeed::hEntry;
 
 sub class_name { "hfeed" }
-sub singular_fields { qw(title base link tagline description author modified copyright generator) }
+sub singular_fields { qw(title base language link tagline description author modified copyright generator) }
 sub plural_fields { qw(entries categories) }
 
 sub from_tree {
@@ -38,13 +38,22 @@ sub _convert {
 	my %tags;
 	$tree->look_down(sub {
 		my $bit = shift;
-		my $feed_class = $bit->attr('class') || $bit->attr('rel') || $bit->tag || return 0;
+		my $feed_class = $bit->attr('class') || $bit->attr('rel') || $bit->attr('lang') || $bit->attr("http-equiv") || $bit->tag || return 0;
 		if (!$feed_class) {
 			return 0;
 		} elsif (_match($feed_class, 'hentry')) {
+			$bit->detach;
 			$feed->entries(Data::Microformat::hFeed::hEntry->from_tree($bit, $url));
         } elsif (_match($feed_class, 'feed-title')) {
 			$feed->title($bit->as_text);
+        } elsif (_match($feed_class, 'feed-language')) {
+			$feed->language($bit->attr('content') || $bit->as_text);
+        } elsif (_match($feed_class, 'Content-Language')) {
+			$feed->language($bit->attr('content'));
+        } elsif (_match($feed_class, 'lang')) {
+			$feed->language($bit->attr('lang'));
+        } elsif (_match($feed_class, 'self'))  {
+			$feed->link($class->_url_decode($bit->attr('href')));
         } elsif (_match($feed_class, 'title')) {
 			$feed->title($bit->as_text);
         } elsif (_match($feed_class, 'feed-tagline')) {
@@ -56,6 +65,7 @@ sub _convert {
 		} elsif (_match($feed_class, 'license')) {
 			$feed->copyright({ href => $class->_url_decode($bit->attr('href')), text => $bit->as_text });
 		} elsif (_match($feed_class,'vcard')) {
+			$bit->detach;
 			my $card = Data::Microformat::hCard->from_tree($bit, $url);
 			$feed->author($card);
 		} elsif (_match($feed_class, 'bookmark')) {
