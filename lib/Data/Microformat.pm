@@ -116,11 +116,11 @@ sub parse
 	my $representative_url = shift;
 	
 	# These few transforms allow us to decode "psychotic" encodings, see t/03type.t for details
-	$content =~ tr/+/ /;
-	$content =~ s/%([a-fA-F0-9]{2,2})/chr(hex($1))/eg;
-	$content =~ s/<!–(.|\n)*–>//g;
-	$content = decode_entities($content);
-	$content =~ s/%([A-F0-9]{2})/pack("C",hex($1))/ieg;
+#	$content =~ tr/+/ /;
+#	$content =~ s/%([a-fA-F0-9]{2,2})/chr(hex($1))/eg;
+#	$content =~ s/<!–(.|\n)*–>//g;
+#	$content = decode_entities($content);
+#	$content =~ s/%([A-F0-9]{2})/pack("C",hex($1))/ieg;
 	
 	my $tree = HTML::TreeBuilder->new_from_content($content);
 	$tree->elementify;
@@ -294,6 +294,18 @@ sub _to_hcard_elements
 	return $root;
 }
 
+sub _url_decode 
+{
+	my $class = shift;
+	my $content = shift;
+	
+	if ($content)
+	{
+		$content =~ s/%([\da-f]{2})/chr(hex($1))/eg;
+	}
+	return $content;
+}
+
 sub _trim
 {
 	my $class = shift;
@@ -301,8 +313,7 @@ sub _trim
 	
 	if ($content)
 	{
-		$content =~ s/^\s+//;
-		$content =~ s/\s+$//;
+		$content =~ s/(^\s*|\s*$)//g;
 	}
 	return $content;
 }
@@ -313,8 +324,7 @@ sub _remove_newlines
 	my $content = shift;
 	if ($content)
 	{
-		$content =~ s/\n/ /g;
-		$content =~ s/\r/ /g;
+		$content =~ s/[\n\r]/ /g;
 	}
 	return $content;
 }

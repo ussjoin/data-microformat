@@ -12,7 +12,6 @@ sub plural_fields { qw(tags) }
 sub from_tree {
  	my $class = shift;
     my $tree  = shift;
-
 	my @entries;
 	foreach my $entry_tree ($tree->look_down('class', qr/hentry/)) {
 		push @entries, $class->_convert($entry_tree);
@@ -23,7 +22,6 @@ sub from_tree {
 sub _convert {
 	my $class = shift;
 	my $tree  = shift;
-
 	my $entry = $class->new;
 	$tree->look_down(sub {
 		my $bit = shift;
@@ -49,7 +47,7 @@ sub _convert {
 			my $card = Data::Microformat::hCard->from_tree($bit);
 			$entry->author($card);
 		} elsif (_match($entry_class, 'bookmark')) {
-			$entry->link($bit->attr('href'));
+			$entry->link($class->_url_decode($bit->attr('href')));
 		} elsif (_match($entry_class, 'tag')) {
 			$entry->tags($bit->as_text);
 		} else {

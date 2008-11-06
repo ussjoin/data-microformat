@@ -17,11 +17,11 @@ ok(my $type = Data::Microformat::hCard::type->parse($simple));
 
 is($type->kind, "tel");
 is($type->type, "Home");
-is($type->value, "1.415.555.1212");
+is($type->value, "+1.415.555.1212");
 
 my $comparison = << 'EOF';
 <div class="tel">
-	<div class="value">1.415.555.1212</div>
+	<div class="value">+1.415.555.1212</div>
 	<div class="type">Home</div>
 </div>
 EOF
@@ -29,7 +29,7 @@ is ($type->to_hcard, $comparison);
 
 my $text_comparison = << 'EOF';
 tel: 
-	value: 1.415.555.1212
+	value: +1.415.555.1212
 	type: Home
 EOF
 is($type->to_text, $text_comparison);

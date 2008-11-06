@@ -33,6 +33,7 @@ sub from_tree
 {
 	my $class = shift;
 	my $tree = shift;
+
 	my $representative_url = shift;
 	if ($representative_url)
 	{
@@ -137,7 +138,7 @@ sub from_tree
 						#We do this so that if the type is, for instance,
 						# "agent vcard," that we just put the vcard in
 						# agent, and not anywhere else.
-						# vcard *MUST* have another class, otherwise we'll
+						# vcard *MUST* have another class, otherwise we''ll
 						# discard it.
 					}
 				}
@@ -161,7 +162,7 @@ sub from_tree
 						{
 							if ($type =~ m/(photo|logo|agent|sound|url)/)
 							{
-								$data = $class->_trim($bit->attr('href'));
+								$data = $class->_trim($class->_url_decode($bit->attr('href')));
 								if ($bit->attr('rel') && $bit->attr('rel') eq "me")
 								{
 									$rel_me = $data;
@@ -237,6 +238,8 @@ sub from_tree
 				}
 			}
 		}
+	
+
 		
 		# Check: Implied N Optimization?
 		if (!$card->n && $card->fn && (!$card->org || (!$card->fn eq $card->org)))

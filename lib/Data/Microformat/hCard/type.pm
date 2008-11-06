@@ -39,7 +39,7 @@ sub from_tree
 				}
 				elsif ($tree->attr('class') =~ m/(email|tel)/ && $bit->tag =~ m/(a|area)/ && $bit->attr('href'))
 				{
-					$data = $class->_trim($bit->attr('href'));
+					$data = $class->_trim($class->_url_decode($bit->attr('href')));
 					$data =~ s/^(mailto|tel)\://;
 					$data =~ s/\?$//;
 				}
@@ -57,7 +57,7 @@ sub from_tree
 		elsif ($tree->attr('class') =~ m/(email|tel)/ && $tree->tag =~ m/(a|area)/ && $tree->attr('href'))
 		{
 			# This check deals with non-nested mailto links-- such as are created by the official hCard creator.
-			my $data = $class->_trim($tree->attr('href'));
+			my $data = $class->_trim($class->_url_decode($tree->attr('href')));
 			$data =~ s/^(mailto|tel)\://;
 			$data =~ s/\?$//;
 			$object->value($data);

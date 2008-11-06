@@ -28,7 +28,6 @@ sub generator { shift->SUPER::generator(@_) || __PACKAGE__ }
 sub _convert {
 	my $class = shift;
 	my $tree  = shift;
-
 	my $feed = $class->new;
 	my %tags;
 	$tree->look_down(sub {
@@ -49,12 +48,12 @@ sub _convert {
 		} elsif (_match($feed_class, 'updated')) {
 			$feed->modified(_do_date($bit));
 		} elsif (_match($feed_class, 'license')) {
-			$feed->copyright({ href => $bit->attr('href'), text => $bit->as_text });
+			$feed->copyright({ href => $class->_url_decode($bit->attr('href')), text => $bit->as_text });
 		} elsif (_match($feed_class,'vcard')) {
 			my $card = Data::Microformat::hCard->from_tree($bit);
 			$feed->author($card);
 		} elsif (_match($feed_class, 'bookmark')) {
-			$feed->link($bit->attr('href'));
+			$feed->link($class->_url_decode($bit->attr('href'));
 		} elsif (_match($feed_class, 'tag') && _match($feed_class, 'directory')) {
 			$feed->categories($bit->as_text);
 		} else {

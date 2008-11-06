@@ -7,7 +7,7 @@ use Test::More tests => 11;
 
 my $simple = << 'EOF';
 	 <div class='hentry entry' id='tag__2008__2_actionstreams_819'>
-		<h3 class='entry-title'><a href='http://example.com/989691066' rel='bookmark' title='A title'>A title</h3>
+		<h3 class='entry-title'><a href='http://example.com/989691066' rel='bookmark' title='A title'>A title</a></h3>
 		<div class='entry-summary'>Brendan did something</div>
 		<div class='entry-content'>
                 Brendan waxed lyrical about cats &amp; puppies.

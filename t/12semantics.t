@@ -33,7 +33,7 @@ is($card->sound, "http://ussjoin.com");
 is($card->title, "Test");
 is($card->logo, "http://ussjoin.com");
 is($card->role, "Test");
-is($card->tel->value, "1.415.555.1212");
+is($card->tel->value, "+1.415.555.1212");
 is($card->email->value, 'jobs@sixapart.com');
 
 $simple = << 'EOF';
@@ -77,7 +77,7 @@ EOF
 ok(my $type = Data::Microformat::hCard::type->parse($simple));
 
 is($type->type, "Home");
-is($type->value, "1.415.555.1212");
+is($type->value, "+1.415.555.1212");
 
 $simple = << 'EOF';
 <div class="geo">GEO: 
