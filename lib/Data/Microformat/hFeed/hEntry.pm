@@ -37,11 +37,11 @@ sub _convert {
 		} elsif (_match($entry_class, 'hentry')) {
 			$entry->id($bit->attr('id'));
         } elsif (_match($entry_class, 'entry-title')) {
-			$entry->title($bit->as_text);
+			$entry->title($class->_get_html($bit));
         } elsif (_match($entry_class, 'entry-summary')) {
-			$entry->summary($bit->as_text);
+			$entry->summary($class->_get_html($bit));
         } elsif (_match($entry_class, 'entry-content')) {
-			$entry->content($bit->as_text);
+			$entry->content($class->_get_html($bit));
 		} elsif (_match($entry_class, 'published')) {
 			$entry->issued(_do_date($bit));
 		} elsif (_match($entry_class, 'modified')) {
@@ -76,6 +76,22 @@ sub _match {
 sub to_html {
 	my $entry = shift;
 
+}
+
+sub _get_html {
+	my $class   = shift;
+	my $element = shift;
+	my @list    = $element->content_list;
+	return $element->as_text unless @list;
+	my $out     = "";
+	for my $child (@list) {
+		if (ref($child)) {
+			$out .= $child->as_HTML.$child->endtag;
+		} else {
+			$out .= $child;
+		}
+	}
+	return $out;
 }
 
 1;
