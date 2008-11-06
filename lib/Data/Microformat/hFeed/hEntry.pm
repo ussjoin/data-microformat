@@ -37,7 +37,7 @@ sub _convert {
 		} elsif (_match($entry_class, 'hentry')) {
 			$entry->id($bit->attr('id'));
         } elsif (_match($entry_class, 'entry-title')) {
-			$entry->title($class->_get_html($bit));
+			$entry->title($bit->as_text);
         } elsif (_match($entry_class, 'entry-summary')) {
 			$entry->summary($class->_get_html($bit));
         } elsif (_match($entry_class, 'entry-content')) {

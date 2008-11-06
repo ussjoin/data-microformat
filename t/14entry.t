@@ -8,7 +8,7 @@ use Test::More tests => 11;
 my $simple = << 'EOF';
 	 <div class='hentry entry' id='tag__2008__2_actionstreams_819'>
 		<h3 class='entry-title'><a href='http://example.com/989691066' rel='bookmark' title='A title'>A title</a></h3>
-		<div class='entry-summary'>Brendan did something</div>
+		<div class='entry-summary'><p>Brendan <a href="foo">did</a> something</p></div>
 		<div class='entry-content'>
                 Brendan waxed lyrical about cats &amp; puppies.
         </div>
@@ -26,15 +26,15 @@ ok(my $entry = Data::Microformat::hFeed::hEntry->parse($simple));
 my $issued   = DateTime->new( year => 2008, month => 11, day => 4, hour => 17, minute => 21, second => 6);
 my $modified = $issued->clone->add( seconds => 1); 
 
-is($entry->id,       "tag__2008__2_actionstreams_819",              "Got correct id");
-is($entry->title,    "A title",                                     "Got correct title");
-is($entry->link,     "http://example.com/989691066",                "Got correct link");
-is($entry->summary,  "Brendan did something",                       "Got correct summary");
-is($entry->content,  "Brendan waxed lyrical about cats & puppies.", "Got correct content");
-is("".$entry->issued,   "".$issued,                                 "Got correct issued");
-is("".$entry->modified, "".$modified,                               "Got correct modified"); 
-is_deeply([$entry->tags], [qw(microformats perl)],                  "Got correct tags");
+is($entry->id,       "tag__2008__2_actionstreams_819",                 "Got correct id");
+is($entry->title,    "A title",                                        "Got correct title");
+is($entry->link,     "http://example.com/989691066",                   "Got correct link");
+is($entry->summary,  "<p>Brendan <a href=\"foo\">did</a> something\n</p>", "Got correct summary");
+is($entry->content,  "Brendan waxed lyrical about cats & puppies.",    "Got correct content");
+is("".$entry->issued,   "".$issued,                                    "Got correct issued");
+is("".$entry->modified, "".$modified,                                  "Got correct modified"); 
+is_deeply([$entry->tags], [qw(microformats perl)],                     "Got correct tags");
 
-ok(my $author = $entry->author,                                     "Got author");
-is($author->fn, "Brendan O'Connor",                                 "Got author fullname");      
+ok(my $author = $entry->author,                                        "Got author");
+is($author->fn, "Brendan O'Connor",                                    "Got author fullname");      
 
