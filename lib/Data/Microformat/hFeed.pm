@@ -46,11 +46,14 @@ sub _convert {
 			$feed->entries(Data::Microformat::hFeed::hEntry->from_tree($bit, $url));
         } elsif (_match($feed_class, 'feed-title')) {
 			$feed->title($bit->as_text);
+			foreach my $attr (qw(id lang)) {
+				$feed->$attr($bit->attr($attr)) if $bit->attr($attr);
+			}
         } elsif (_match($feed_class, 'feed-language')) {
 			$feed->language($bit->attr('content') || $bit->as_text);
         } elsif (_match($feed_class, 'Content-Language')) {
 			$feed->language($bit->attr('content'));
-        } elsif (_match($feed_class, 'lang')) {
+        } elsif (_match($feed_class, 'lang') && $bit->tag eq 'body') {
 			$feed->language($bit->attr('lang'));
         } elsif (_match($feed_class, 'self'))  {
 			$feed->link($class->_url_decode($bit->attr('href')));
@@ -198,6 +201,10 @@ The base of this feed if available.
 =head2 link
 
 The permalink of this feed.
+
+=head2 language
+
+The language of this feed.
 
 =head2 tagline
 
