@@ -86,7 +86,8 @@ sub _get_html {
 	my $out     = "";
 	for my $child (@list) {
 		if (ref($child)) {
-			$out .= $child->as_HTML.$child->endtag;
+			chomp($out .= $child->as_HTML);
+			$out .= $child->endtag;
 		} else {
 			$out .= $child;
 		}

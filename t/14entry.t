@@ -29,7 +29,7 @@ my $modified = $issued->clone->add( seconds => 1);
 is($entry->id,       "tag__2008__2_actionstreams_819",                 "Got correct id");
 is($entry->title,    "A title",                                        "Got correct title");
 is($entry->link,     "http://example.com/989691066",                   "Got correct link");
-is($entry->summary,  "<p>Brendan <a href=\"foo\">did</a> something\n</p>", "Got correct summary");
+is($entry->summary,  '<p>Brendan <a href="foo">did</a> something</p>', "Got correct summary");
 is($entry->content,  "Brendan waxed lyrical about cats & puppies.",    "Got correct content");
 is("".$entry->issued,   "".$issued,                                    "Got correct issued");
 is("".$entry->modified, "".$modified,                                  "Got correct modified"); 
