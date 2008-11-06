@@ -3,9 +3,10 @@ package Data::Microformat::hFeed;
 use strict;
 use base qw(Data::Microformat);
 use Data::Microformat::hFeed::hEntry;
+use Data::Microformat::geo;
 
 sub class_name { "hfeed" }
-sub singular_fields { qw(title base language link tagline description author modified copyright generator) }
+sub singular_fields { qw(title base language geo link tagline description author modified copyright generator) }
 sub plural_fields { qw(entries categories) }
 
 sub from_tree {
@@ -71,6 +72,10 @@ sub _convert {
 			$bit->detach;
 			my $card = Data::Microformat::hCard->from_tree($bit, $url);
 			$feed->author($card);
+		} elsif (_match($feed_class, 'geo')) {
+			$bit->detach;
+			my $geo = Data::Microformat::geo->from_tree($bit, $url);
+			$feed->geo($geo);
 		} elsif (_match($feed_class, 'bookmark')) {
 			$feed->link($class->_url_decode($bit->attr('href')));
 		} elsif (_match($feed_class, 'tag') && _match($feed_class, 'directory')) {
@@ -235,6 +240,10 @@ All the categories for this feed.
 =head2 author
 
 The author of this feed. Returns a L<Data::Microformat::hCard|Data::Microformat::hCard> object.
+
+=head2 geo
+
+The geo location information for this feed. Returns a L<Data::Microformat::geo|Data::Microformat::geo> object.
 
 =head2 entries
 

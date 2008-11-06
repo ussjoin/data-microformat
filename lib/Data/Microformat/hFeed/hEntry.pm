@@ -6,7 +6,7 @@ use Data::Microformat::hCard;
 use DateTime::Format::W3CDTF;
 
 sub class_name { "hentry" }
-sub singular_fields { qw(id base title content summary modified issued link author) }
+sub singular_fields { qw(id base geo title content summary modified issued link author) }
 sub plural_fields { qw(tags) }
 
 sub from_tree {
@@ -49,6 +49,10 @@ sub _convert {
 		} elsif (_match($entry_class,'vcard')) {
 			my $card = Data::Microformat::hCard->from_tree($bit);
 			$entry->author($card);
+        } elsif (_match($entry_class, 'geo')) {
+            $bit->detach;
+            my $geo = Data::Microformat::geo->from_tree($bit, $url);
+            $entry->geo($geo);
 		} elsif (_match($entry_class, 'bookmark')) {
 			$entry->link($class->_url_decode($bit->attr('href')));
 		} elsif (_match($entry_class, 'tag')) {
@@ -217,6 +221,10 @@ All the tags for this entry.
 =head2 author
 
 The author of this entry. Returns a L<Data::Microformat::hCard|Data::Microformat::hCard> object.
+
+=head2 geo
+
+The geo location information for this entry. Returns a L<Data::Microformat::geo|Data::Microformat::geo> object.
 
 =head2 to_html
 
