@@ -53,7 +53,7 @@ sub _convert {
 			my $card = Data::Microformat::hCard->from_tree($bit);
 			$feed->author($card);
 		} elsif (_match($feed_class, 'bookmark')) {
-			$feed->link($class->_url_decode($bit->attr('href'));
+			$feed->link($class->_url_decode($bit->attr('href')));
 		} elsif (_match($feed_class, 'tag') && _match($feed_class, 'directory')) {
 			$feed->categories($bit->as_text);
 		} else {
