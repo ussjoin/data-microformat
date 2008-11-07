@@ -112,6 +112,8 @@ sub from_tree
 		}
 		
 		my $card = Data::Microformat::hCard->new;
+        $card->{_no_dupe_keys} = 1;
+
 		my @bits = $card_tree->content_list;
 		
 		foreach my $bit (@bits)
@@ -292,6 +294,7 @@ sub from_tree
 				$card->n($name);
 			}
 		}
+        $card->{_no_dupe_keys} = 0;
 		push (@all_cards, $card);
 	}
 	

@@ -55,7 +55,7 @@ sub AUTOLOAD
 		return;
 	}
 	if ($self->{_singulars}{$name}) {
-		$self->{$name} = $parameter if $parameter && !defined$self->{$name};
+		$self->{$name} = $parameter if $parameter && (!$self->{_no_dupe_keys} || !defined $self->{$name});
 		return $self->{$name};
 	} else {
 		push @{$self->{$name}}, $parameter if $parameter;
@@ -108,7 +108,7 @@ sub from_tree
 	foreach my $object_tree (@object_trees)
 	{
 		my $object = $class->new;
-		
+		$object->{_no_dupe_keys} = 1;		
 		my @bits = $object_tree->descendants;
 		
 		foreach my $bit (@bits)
@@ -130,16 +130,11 @@ sub from_tree
 				$object->$type($data);
 			}
 		}
+        $object->{_no_dupe_keys} = 0;
 		push(@objects, $object)
 	}
-	if (wantarray)
-	{
-		return @objects;
-	}
-	else
-	{
-		return $objects[0];
-	}
+
+	return wantarray? @objects : $objects[0];
 }
 
 sub to_html
@@ -152,6 +147,7 @@ sub to_html
 	
 	return $ret;
 }
+
 
 *to_hcard = \&to_html;
 

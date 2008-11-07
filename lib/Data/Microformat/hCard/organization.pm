@@ -20,6 +20,7 @@ sub from_tree
 	return unless $tree;
 	
 	my $object = Data::Microformat::hCard::organization->new;
+    $object->{_no_dupe_keys} = 1;
 	my @bits = $tree->content_list;
 	
 	foreach my $bit (@bits)
@@ -50,6 +51,7 @@ sub from_tree
 			}
 		}
 	}
+	$object->{_no_dupe_keys} = 0;
 	return $object;
 }
 

@@ -32,6 +32,7 @@ sub _convert {
 	my $tree  = shift;
 	my $url   = shift;
 	my $feed = $class->new;
+	$feed->{_no_dupe_keys} = 1;
 	if (defined $url) {
 		$feed->link($url);
 		$feed->base($url);
@@ -70,7 +71,10 @@ sub _convert {
 		} elsif (_match($feed_class, 'updated')) {
 			$feed->modified(_do_date($bit));
 		} elsif (_match($feed_class, 'license')) {
-			$feed->copyright({ href => $class->_url_decode($bit->attr('href')), text => $bit->as_text });
+			my $opts = {};
+			$opts->{href} = $class->_url_decode($bit->attr('href')) if $bit->attr('href');
+			$opts->{text} = $bit->as_text if $bit->as_text;
+			$feed->copyright($opts);
 		} elsif (_match($feed_class,'vcard')) {
 			$bit->detach;
 			my $card = Data::Microformat::hCard->from_tree($bit, $url);
@@ -88,6 +92,7 @@ sub _convert {
 		}
 		return 0;
 	});
+	$feed->{_no_dupe_keys} = 0;
 	return $feed;
 }
 

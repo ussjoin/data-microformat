@@ -25,6 +25,7 @@ sub _convert {
 	my $tree  = shift;
 	my $url   = shift;
 	my $entry = $class->new;
+	$entry->{_no_dupe_keys} = 1;
 	$entry->base($url) if $url;
 	$tree->look_down(sub {
 		my $bit = shift;
@@ -62,6 +63,7 @@ sub _convert {
 		}
 		return 0;
 	});
+    $entry->{_no_dupe_keys} = 0;
 	return $entry;
 }
 
