@@ -50,15 +50,15 @@ sub AUTOLOAD
 	$name =~ s/.*://;
 
 	unless (exists $self->{$name}) {
-		warn(ref($self)." does not have a parameter called $name.\n") unless $name =~ m/DESTROY/;
+		#warn(ref($self)." does not have a parameter called $name.\n") unless $name =~ m/DESTROY/;
 		# Do nothing here, as there's no need to warn that some parts of hCards aren't valid
 		return;
 	}
 	if ($self->{_singulars}{$name}) {
-		$self->{$name} = $parameter if $parameter;
+		$self->{$name} = $parameter if $parameter; # && !exists $self->{$name};
 		return $self->{$name};
 	} else {
-		push @{$self->{$name}}, $parameter if $parameter;
+		push @{$self->{$name}}, $parameter if $parameter; # && !exists $self->{$name};
 		my @vals =  @{$self->{$name} || []};
 		return wantarray? @vals : $vals[0];
 	}
@@ -340,6 +340,8 @@ reasonably well-formatted, enough to make parsing possible.
 
 Certain modules may override this if they have specific parsing concerns.
 
+=head2 $base->to_html
+
 =head2 $base->to_hcard
 
 This method, called on an instance of Data::Microformat or its subclasses, will return
@@ -347,6 +349,8 @@ an hCard HTML representation of the data present. This is most likely to be
 used when building your own microformatted data, but can be called on parsed content as
 well. The returned data is very lightly formatted, and it uses only <div> tags
 for markup, rather than <span> tags.
+
+C<to_hcard> is a synonym for C<to_html>.
 
 =head2 $base->to_text
 
