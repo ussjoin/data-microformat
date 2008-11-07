@@ -77,13 +77,7 @@ sub _match {
 	return $field =~ m!(^|\s)$target(\s|$)!;
 }
 
-sub to_html {
-	my $entry   = shift;
-	my $element = $entry->_to_elements;
-	return $element->as_HTML;
-}
-
-sub _to_elements {
+sub _to_hcard_elements {
 	my $entry  = shift;
 
 	my $root   = HTML::Element->new('div', class => 'hentry entry');
