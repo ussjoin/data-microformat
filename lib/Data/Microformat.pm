@@ -55,10 +55,10 @@ sub AUTOLOAD
 		return;
 	}
 	if ($self->{_singulars}{$name}) {
-		$self->{$name} = $parameter if $parameter; # && !exists $self->{$name};
+		$self->{$name} = $parameter if $parameter && !defined$self->{$name};
 		return $self->{$name};
 	} else {
-		push @{$self->{$name}}, $parameter if $parameter; # && !exists $self->{$name};
+		push @{$self->{$name}}, $parameter if $parameter;
 		my @vals =  @{$self->{$name} || []};
 		return wantarray? @vals : $vals[0];
 	}
@@ -253,37 +253,47 @@ sub _to_hcard_elements
 
 sub _url_decode 
 {
-	my $class = shift;
+	my $class   = shift;
 	my $content = shift;
-	
-	if ($content)
-	{
-		$content =~ s/%([\da-f]{2})/chr(hex($1))/eg;
-	}
+	return unless defined $content;
+	$content =~ s/%([\da-f]{2})/chr(hex($1))/eg;
 	return $content;
 }
 
 sub _trim
 {
-	my $class = shift;
+	my $class   = shift;
 	my $content = shift;
-	
-	if ($content)
-	{
-		$content =~ s/(^\s*|\s*$)//g;
-	}
+	return unless defined $content;
+	$content =~ s/(^\s*|\s*$)//g;
 	return $content;
 }
 
 sub _remove_newlines
 {
-	my $class = shift;
+	my $class   = shift;
 	my $content = shift;
-	if ($content)
-	{
-		$content =~ s/[\n\r]/ /g;
-	}
+	return unless defined $content;
+	$content =~ s/[\n\r]/ /g;
 	return $content;
+}
+
+
+sub _get_child_html_from_element
+{
+    my $class   = shift;
+    my $element = shift;
+    my @list    = $element->content_list;
+    return $element->as_text unless @list;
+    my $out     = "";
+    for my $child (@list) {
+        if (ref($child)) {
+            $out .= $child->as_HTML(undef,"\t",{});
+        } else {
+            $out .= $child;
+        }
+    }
+    return $out;
 }
 
 1;

@@ -39,9 +39,9 @@ sub _convert {
         } elsif (_match($entry_class, 'entry-title')) {
 			$entry->title($bit->as_text);
         } elsif (_match($entry_class, 'entry-summary')) {
-			$entry->summary($class->_get_html($bit));
+			$entry->summary($class->_get_child_html_from_element($bit));
         } elsif (_match($entry_class, 'entry-content')) {
-			$entry->content($class->_get_html($bit));
+			$entry->content($class->_get_child_html_from_element($bit));
 		} elsif (_match($entry_class, 'published')) {
 			$entry->issued(_do_date($bit));
 		} elsif (_match($entry_class, 'modified')) {
@@ -138,23 +138,6 @@ sub _to_hcard_elements {
 
 	$root->push_content($post_info) if $saw_something;
 	return $root;
-}
-
-sub _get_html {
-	my $class   = shift;
-	my $element = shift;
-	my @list    = $element->content_list;
-	return $element->as_text unless @list;
-	my $out     = "";
-	for my $child (@list) {
-		if (ref($child)) {
-			chomp($out .= $child->as_HTML);
-			$out .= $child->endtag;
-		} else {
-			$out .= $child;
-		}
-	}
-	return $out;
 }
 
 1;
