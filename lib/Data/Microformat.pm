@@ -42,70 +42,25 @@ sub _init
 
 sub AUTOLOAD 
 {
-	my $self = shift;
+	my $self      = shift;
 	my $parameter = shift;
-	
+	$parameter    =~ s!(^\s*|\s*$)!!g if $parameter && !ref($parameter);	
+
 	my $name = $AUTOLOAD;
 	$name =~ s/.*://;
 
-	my $class_name = $self->{_class_name};
-	
-	if (exists $self->{$name})
-	{
-		if (!$self->{_singulars}{$name})
-		{
-			if ($parameter)
-			{
-				if (!$self->{$name})
-				{
-					$self->{$name} = [];
-				}
-				my $temp = $self->{$name};
-				$parameter =~ s/^\s//;
-				$parameter =~ s/\s$//;
-				push(@$temp, $parameter);
-			}
-			else
-			{
-				if (defined $self->{$name})
-				{
-					my $temp = $self->{$name};
-					if (wantarray)
-					{
-						return @$temp;
-					}
-					else
-					{
-						return @$temp[0];
-					}
-				}
-				else
-				{
-					return undef;
-				}
-			}
-		}
-		else
-		{
-			if ($parameter)
-			{
-				if (!defined $self->{$name}) # Drop all but the first saved singular thing
-				{
-					$parameter =~ s/^\s//;
-					$parameter =~ s/\s$//;
-					$self->{$name} = $parameter;
-				}
-			}
-			else
-			{
-				return $self->{$name};
-			}
-		}
-	}
-	else
-	{
-		# warn(ref($self)." does not have a parameter called $name.\n") unless $name =~ m/DESTROY/;
+	unless (exists $self->{$name}) {
+		warn(ref($self)." does not have a parameter called $name.\n") unless $name =~ m/DESTROY/;
 		# Do nothing here, as there's no need to warn that some parts of hCards aren't valid
+		return;
+	}
+	if ($self->{_singulars}{$name}) {
+		$self->{$name} = $parameter if $parameter;
+		return $self->{$name};
+	} else {
+		push @{$self->{$name}}, $parameter if $parameter;
+		my @vals =  @{$self->{$name} || []};
+		return wantarray? @vals : $vals[0];
 	}
 }
 
