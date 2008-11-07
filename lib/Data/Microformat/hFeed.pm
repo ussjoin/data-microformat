@@ -6,7 +6,7 @@ use Data::Microformat::hFeed::hEntry;
 use Data::Microformat::geo;
 
 sub class_name { "hfeed" }
-sub singular_fields { qw(title base language geo link tagline description author modified copyright generator) }
+sub singular_fields { qw(id title base language geo link tagline description author modified copyright generator) }
 sub plural_fields { qw(entries categories) }
 
 sub from_tree {
@@ -101,8 +101,88 @@ sub _match {
 }
 
 sub to_html {
-	my $feed = shift;
+	my $feed     = shift;
+	my $element  = $feed->_to_elements;
+	return $element->as_HTML;
+}
 
+sub _to_elements {
+	my $feed     = shift;
+
+	my $root  = HTML::Element->new('div', class => 'hfeed');
+	$root->attr('id', $feed->id)         if defined $feed->id;
+	$root->attr('lang', $feed->language) if defined $feed->language;
+
+	# title
+	# link
+	if (defined $feed->title) {
+		my $title =  HTML::Element->new('div', class => 'feed-title');
+		if ($feed->link) {
+			my $link = HTML::Element->new('a', href => $feed->link, rel => 'bookmark');
+			$link->push_content($feed->title);
+			$title->push_content($link);
+		} else {
+			$title->push_content($feed->title);
+		}
+		$root->push_content($title);
+	}
+
+	# updated
+	if ($feed->modified) {
+		my $div  = HTML::Element->new('div');
+		my $abbr = HTML::Element->new('abbr', class => "updated", title => DateTime::Format::W3CDTF->format_datetime($feed->modified));
+		$abbr->push_content($feed->modified->strftime("%B %d, %Y"));
+		$div->push_content($abbr);
+		$root->push_content($div);
+	}
+
+	# tagline
+	# description
+	foreach my $attr (qw(tagline description)) {
+		next unless $feed->$attr;
+		my $div = HTML::Element->new('div', class => "feed-$attr");
+		$div->push_content($feed->$attr);
+		$root->push_content($div);
+	}
+
+	# license
+	if ($feed->copyright) {
+		my $license = $feed->copyright;
+		my $div     = HTML::Element->new('div');
+		my $a       = HTML::Element->new('a', rel => 'license');
+		$a->attr('href', $license->{href})    if defined $license->{href};
+		$a->push_content($license->{content}) if  defined $license->{content};
+		$div->push_content($a);
+		$root->push_content($div);
+	}
+
+	# author
+	# geo
+	foreach my $attr (qw(author geo)) {
+		next unless $feed->$attr;
+		my $div = HTML::Element->new('div');
+		$div->push_content($feed->$attr->_to_hcard_elements);
+		$root->push_content($div);
+	}
+
+	# categories
+	my @categories = $feed->categories;
+	if (@categories) {
+		my $div = HTML::Element->new('div', class => 'feed-categories');
+		$div->push_content("Categories: ");
+		foreach my $category (@categories) {
+			my $a =  HTML::Element->new('div', rel => 'tag directory');
+			$a->push_content($category);
+			$div->push_content($a);
+		}
+		$root->push_content($div);
+	}
+	
+	# entries
+	foreach my $entry ($feed->entries) {
+		$root->push_content($entry->_to_elements);
+	}
+	return $root;
 }
 
 1;
@@ -277,3 +357,4 @@ This program is distributed in the hope that it will be useful, but without any 
 implied warranty of merchantability or fitness for a particular purpose.
 
 =cut
+__DATA__

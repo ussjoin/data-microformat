@@ -78,8 +78,72 @@ sub _match {
 }
 
 sub to_html {
-	my $entry = shift;
+	my $entry   = shift;
+	my $element = $entry->_to_elements;
+	return $element->as_HTML;
+}
 
+sub _to_elements {
+	my $entry  = shift;
+
+	my $root   = HTML::Element->new('div', class => 'hentry entry');
+
+	# id
+	$root->attr('id', $entry->id) if $entry->id;
+
+
+	# title
+	if ($entry->title) {
+		my $title = HTML::Element->new('h3', class => 'entry-title');
+		if ($entry->link) {
+			my $a = HTML::Element->new('a', href => $entry->link, rel => 'bookmark', title => $entry->title );
+			$a->push_content($entry->title);
+			$title->push_content($a);
+		} else {
+			$title->push_content($entry->title);
+		}
+		$root->push_content($title);
+	}
+
+	# summary
+	# content
+	foreach my $attr (qw(summary content)) {
+		next unless $entry->$attr;
+		my $div = HTML::Element->new('div', class => "entry-$attr");
+		$div->push_content($entry->$attr);
+		$root->push_content($div);
+	}
+
+	# post info
+	my $post_info     =  HTML::Element->new('ul');
+	my $saw_something = 0;
+	# published
+	# modified
+	foreach my $date (qw(issued modified)) {
+		my $val  = $entry->$date || next;
+		$saw_something++;
+		my $name = ($date eq 'issued') ? 'published' : $date; 
+
+       	my $li  = HTML::Element->new('li');
+		$li->push_content(ucfirst($name).": ");
+       	my $abbr = HTML::Element->new('abbr', class => $name, title => DateTime::Format::W3CDTF->format_datetime($entry->$date));
+       	$abbr->push_content($entry->$date->strftime("%B %d, %Y"));
+       	$li->push_content($abbr);
+       	$post_info->push_content($li);
+	}
+
+    # author
+    # geo
+    foreach my $attr (qw(author geo)) {
+		next unless $entry->$attr;
+		$saw_something++;
+        my $li = HTML::Element->new('li');
+        $li->push_content($entry->$attr->_to_hcard_elements);
+        $post_info->push_content($li);
+    }
+
+	$root->push_content($post_info) if $saw_something;
+	return $root;
 }
 
 sub _get_html {
