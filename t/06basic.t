@@ -43,7 +43,7 @@ ok(my $card = Data::Microformat::hCard->parse($simple));
 is($card->fn, "CommerceNet");
 is($card->url, "http://www.commerce.net/");
 is($card->org->organization_name, "CommerceNet");
-is($card->n->given_name, "");
+is($card->n->given_name, undef);
 ok(my @adrs = $card->adr);
 is(scalar @adrs, 1);
 ok(my $adr = $adrs[0]);
