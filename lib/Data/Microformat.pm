@@ -142,7 +142,7 @@ sub from_tree
 	}
 }
 
-sub to_hcard
+sub to_html
 {
 	my $self  = shift;
 	
@@ -152,6 +152,8 @@ sub to_hcard
 	
 	return $ret;
 }
+
+*to_hcard = \&to_html;
 
 sub to_text
 {

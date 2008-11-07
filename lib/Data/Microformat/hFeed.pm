@@ -45,6 +45,7 @@ sub _convert {
 		} elsif (_match($feed_class, 'hentry')) {
 			$bit->detach;
 			$feed->entries(Data::Microformat::hFeed::hEntry->from_tree($bit, $url));
+			$bit->delete;
         } elsif (_match($feed_class, 'feed-title')) {
 			$feed->title($bit->as_text);
 			foreach my $attr (qw(id lang)) {
@@ -56,7 +57,9 @@ sub _convert {
 			$feed->language($bit->attr('content'));
         } elsif (_match($feed_class, 'lang') && $bit->tag eq 'body') {
 			$feed->language($bit->attr('lang'));
-        } elsif (_match($feed_class, 'self'))  {
+        } elsif (_match($feed_class, 'self') && $bit->tag eq 'link')  {
+			$feed->link($class->_url_decode($bit->attr('href')));
+        } elsif (_match($feed_class, 'bookmark'))  {
 			$feed->link($class->_url_decode($bit->attr('href')));
         } elsif (_match($feed_class, 'title')) {
 			$feed->title($bit->as_text);
@@ -72,12 +75,12 @@ sub _convert {
 			$bit->detach;
 			my $card = Data::Microformat::hCard->from_tree($bit, $url);
 			$feed->author($card);
+			$bit->delete;
 		} elsif (_match($feed_class, 'geo')) {
 			$bit->detach;
 			my $geo = Data::Microformat::geo->from_tree($bit, $url);
 			$feed->geo($geo);
-		} elsif (_match($feed_class, 'bookmark')) {
-			$feed->link($class->_url_decode($bit->attr('href')));
+			$bit->delete;
 		} elsif (_match($feed_class, 'tag') && _match($feed_class, 'directory')) {
 			$feed->categories($bit->as_text);
 		} else {
@@ -100,13 +103,7 @@ sub _match {
 	return $field =~ m!(^|\s)$target(\s|$)!;
 }
 
-sub to_html {
-	my $feed     = shift;
-	my $element  = $feed->_to_elements;
-	return $element->as_HTML(undef, "    ", {});
-}
-
-sub _to_elements {
+sub _to_hcard_elements {
 	my $feed     = shift;
 
 	my $root  = HTML::Element->new('div', class => 'hfeed');
@@ -180,7 +177,7 @@ sub _to_elements {
 	
 	# entries
 	foreach my $entry ($feed->entries) {
-		$root->push_content($entry->_to_elements);
+		$root->push_content($entry->_to_hcard_elements);
 	}
 	return $root;
 }
