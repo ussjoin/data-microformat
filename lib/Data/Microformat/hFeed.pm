@@ -103,7 +103,7 @@ sub _match {
 sub to_html {
 	my $feed     = shift;
 	my $element  = $feed->_to_elements;
-	return $element->as_HTML;
+	return $element->as_HTML(undef, "    ", {});
 }
 
 sub _to_elements {
