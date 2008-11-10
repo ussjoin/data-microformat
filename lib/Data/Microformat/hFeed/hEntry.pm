@@ -27,11 +27,14 @@ sub _convert {
 	my $entry = $class->new;
 	$entry->{_no_dupe_keys} = 1;
 	$entry->base($url) if $url;
+	my $title;
+	my $id;
 	$tree->look_down(sub {
 		my $bit = shift;
-		my $entry_class = $bit->attr('class') || $bit->attr('rel') || return 0;
+		my $entry_class = $bit->attr('class') || $bit->attr('rel') || $bit->tag || return 0;
 		# TODO 
 		# Summary and Content as html
+
 
 		if (!$entry_class) {
 			return 0;
@@ -39,6 +42,10 @@ sub _convert {
 			$entry->id($bit->attr('id'));
         } elsif (_match($entry_class, 'entry-title')) {
 			$entry->title($bit->as_text);
+			$entry->id($bit->attr('id'));
+        } elsif ($entry_class =~ m!^h\d!) {
+			$title = $bit->as_text    unless defined $title;
+			$id    = $bit->attr('id') unless defined $id;
         } elsif (_match($entry_class, 'entry-summary')) {
 			$entry->summary($class->_get_child_html_from_element($bit));
         } elsif (_match($entry_class, 'entry-content')) {
@@ -63,6 +70,9 @@ sub _convert {
 		}
 		return 0;
 	});
+	# Use first h tag we found if title or id isn't set
+	$entry->title($title) if defined $title; 
+	$entry->title($id)    if defined $id; 
     $entry->{_no_dupe_keys} = 0;
 	return $entry;
 }
@@ -70,13 +80,16 @@ sub _convert {
 sub _do_date {
 	my $element = shift;
 	my $title   = $element->attr('title') || return;
-	return DateTime::Format::W3CDTF->parse_datetime($title);
+	my $dt      = eval { DateTime::Format::W3CDTF->parse_datetime($title) };
+	print "Aaargh $@\n" if $@;
+	return $dt;
+
 }
 
 sub _match {
 	my $field  = shift || return 0;
 	my $target = shift;
-	return $field =~ m!(^|\s)$target(\s|$)!;
+	return $field =~ m!(^|\s*)$target(\s*|$)!i;
 }
 
 sub _to_hcard_elements {
