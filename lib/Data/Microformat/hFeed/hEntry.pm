@@ -81,9 +81,7 @@ sub _do_date {
 	my $element = shift;
 	my $title   = $element->attr('title') || return;
 	my $dt      = eval { DateTime::Format::W3CDTF->parse_datetime($title) };
-	print "Aaargh $@\n" if $@;
 	return $dt;
-
 }
 
 sub _match {
