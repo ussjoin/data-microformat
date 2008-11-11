@@ -80,7 +80,9 @@ sub _convert {
 sub _do_date {
 	my $element = shift;
 	my $title   = $element->attr('title') || return;
+	$title      =~ s!(([+-])(\d+))$!$2.join(":", grep {length} split /(\d\d)/, $3)!e; # egregious hack to work with malformed dates
 	my $dt      = eval { DateTime::Format::W3CDTF->parse_datetime($title) };
+	print "Aargh: $@\n".caller()."\n" if $@;
 	return $dt;
 }
 
