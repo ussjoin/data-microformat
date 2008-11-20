@@ -12,6 +12,8 @@ lib/Data/Microformat/hCard.pm
 lib/Data/Microformat/hCard/name.pm
 lib/Data/Microformat/hCard/organization.pm
 lib/Data/Microformat/hCard/type.pm
+lib/Data/Microformat/hFeed.pm
+lib/Data/Microformat/hFeed/hEntry.pm
 t/00use.t
 t/01adr.t
 t/02geo.t
@@ -26,6 +28,10 @@ t/10containing.t
 t/11dropsingular.t
 t/12semantics.t
 t/13representative.t
+t/14entry.t
+t/15feed.t
+t/16embedded-feed.t
+t/17multiple-feeds.t
 t/pod-coverage.t
 t/pod.t
 Makefile.PL
