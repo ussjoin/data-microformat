@@ -4,11 +4,12 @@ SYNOPSIS
 
 Overview
 
-This module handles three existing specifications from Microformats.org:
+This module handles four existing specifications from Microformats.org:
 
 * hCard - http://microformats.org/wiki/hcard
 * adr   - http://microformats.org/wiki/adr
 * geo   - http://microformats.org/wiki/geo
+* hFeed - http://microformats.org/wiki/hatom
 
 Each of them can be used on their own (hCard uses adr and geo to parse
 addresses and geolocations, but adr and geo have no dependencies on any others,
@@ -16,8 +17,8 @@ and hCard doesn't need either unless the corresponding elements appear in an
 hCard), though the primary appearance of adr and geo "in the wild" is as
 subparts of hCards.
 
-This module exists both to parse existing hCards from web pages, and to create
-new hCards so that they can be put onto the Internet.
+This module exists both to parse existing microformats from webpages, and
+create new HTML representations of microformats.
 
 To use it to parse an existing hCard (or hCards), simply give it the content
 of the page containing them (there is no need to first eliminate extraneous

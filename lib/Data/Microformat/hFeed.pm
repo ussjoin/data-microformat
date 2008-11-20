@@ -226,10 +226,10 @@ Data::Microformat::hFeed - A module to parse and create hFeeds
 
 An hFeed is a microformat used to contain hEntries.
 
-This module exists both to parse existing hFeedss from web pages, and to create
+This module exists both to parse existing hFeeds from web pages, and to create
 new hFeeds so that they can be put onto the Internet.
 
-To use it to parse an existing hFeed (or hFeedss), simply give it the content
+To use it to parse an existing hFeed (or hFeeds), simply give it the content
 of the page containing them (there is no need to first eliminate extraneous
 content, as the module will handle that itself):
 
