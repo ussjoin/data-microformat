@@ -1,6 +1,8 @@
 package Data::Microformat::hFeed::hEntry;
 
 use strict;
+use warnings;
+
 use base qw(Data::Microformat);
 use Data::Microformat::hCard;
 use DateTime::Format::W3CDTF;

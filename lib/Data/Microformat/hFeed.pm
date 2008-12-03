@@ -1,6 +1,8 @@
 package Data::Microformat::hFeed;
 
 use strict;
+use warnings;
+
 use base qw(Data::Microformat);
 use Data::Microformat::hFeed::hEntry;
 use Data::Microformat::geo;
