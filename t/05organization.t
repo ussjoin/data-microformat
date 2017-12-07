@@ -23,7 +23,7 @@ my $comparison = << 'EOF';
 	<div class="organization-unit">Dirty Tricks</div>
 </div>
 EOF
-
+$comparison =~ s/[\s\r\n]*$//;
 is($org->to_hcard, $comparison);
 
 my $text_comparison = << 'EOF';
@@ -47,7 +47,7 @@ $comparison = << 'EOF';
 	<div class="organization-name">Zaphod for President</div>
 </div>
 EOF
-
+$comparison =~ s/[\s\r\n]*$//;
 is($org->to_hcard, $comparison);
 
 $text_comparison = << 'EOF';

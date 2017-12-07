@@ -23,7 +23,7 @@ my $comparison = << 'EOF';
 	<div class="longitude">-122.398453</div>
 </div>
 EOF
-
+$comparison =~ s/[\s\r\n]*$//;
 is($geo->to_hcard, $comparison);
 
 my $text_comparison = << 'EOF';

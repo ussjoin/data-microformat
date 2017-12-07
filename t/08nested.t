@@ -42,7 +42,7 @@ my $comparison = << 'EOF';
 	<div class="nickname">Needs an Agent</div>
 </div>
 EOF
-
+$comparison =~ s/[\s\r\n]*$//;
 is($card->to_hcard, $comparison);
 
 my $text_comparison = << 'EOF';
