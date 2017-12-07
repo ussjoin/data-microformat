@@ -36,7 +36,7 @@ my $comparison = << 'EOF';
 	<div class="country-name">U.S.A.</div>
 </div>
 EOF
-
+$comparison =~ s/[\s\r\n]*$//;
 is($adr->to_hcard, $comparison);
 
 my $text_comparison = << 'EOF';

@@ -44,6 +44,7 @@ my $comparison_of_type = << 'EOF';
 	<div class="type">Preferred</div>
 </div>
 EOF
+$comparison_of_type =~ s/[\s\r\n]*$//;
 
 my $comparison_of_adr = << 'EOF';
 <div class="adr">
@@ -56,6 +57,7 @@ my $comparison_of_adr = << 'EOF';
 	<div class="type">Headquarters</div>
 </div>
 EOF
+$comparison_of_adr =~ s/[\s\r\n]*$//;
 
 is($card->tel->to_hcard, $comparison_of_type);
 is($card->adr->to_hcard, $comparison_of_adr);

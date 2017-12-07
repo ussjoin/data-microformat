@@ -25,6 +25,7 @@ my $comparison = << 'EOF';
 	<div class="type">Home</div>
 </div>
 EOF
+$comparison =~ s/[\s\r\n]*$//;
 is ($type->to_hcard, $comparison);
 
 my $text_comparison = << 'EOF';
@@ -50,7 +51,7 @@ $comparison = << 'EOF';
 	<div class="type">Work</div>
 </div>
 EOF
-
+$comparison =~ s/[\s\r\n]*$//;
 is($type->to_hcard, $comparison);
 
 $text_comparison = << 'EOF';
@@ -73,7 +74,7 @@ $comparison = << 'EOF';
 	<div class="value">test@example.com</div>
 </div>
 EOF
-
+$comparison =~ s/[\s\r\n]*$//;
 is($type->to_hcard, $comparison);
 
 $text_comparison = << 'EOF';

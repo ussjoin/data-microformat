@@ -33,7 +33,7 @@ my $comparison = << 'EOF';
 	<div class="honorific-suffix">Learned, Impartial, and Very Relaxed</div>
 </div>
 EOF
-
+$comparison =~ s/[\s\r\n]*$//;
 is($name->to_hcard, $comparison);
 
 my $text_comparison = << 'EOF';
